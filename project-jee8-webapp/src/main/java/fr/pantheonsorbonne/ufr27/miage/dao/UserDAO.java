@@ -24,7 +24,7 @@ public class UserDAO {
 			throw new NoSuchUserException();
 		}
 		User user = new ObjectFactory().createUser();
-		user.setFname(customer.getLname());
+		user.setFname(customer.getFname());
 		user.setLname(customer.getLname());
 		user.setMembershipId(customer.getId());
 		return user;
