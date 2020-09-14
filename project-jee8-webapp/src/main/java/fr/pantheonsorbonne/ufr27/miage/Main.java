@@ -102,23 +102,31 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		
+		//setup logs
 		Locale.setDefault(Locale.ENGLISH);
 		SLF4JBridgeHandler.removeHandlersForRootLogger();
 		SLF4JBridgeHandler.install();
+		
+		//start grizly http server
 		final HttpServer server = startServer();
 		
+		//make sure persistence is created to force db schema sync uppong startup
 		Persistence.createEntityManagerFactory("default").createEntityManager();
 
+		//start JMS broker
 		BrokerUtils.startBroker();
 
+		//start SQL H2 console
 		startH2Console();
 
 		System.out.println(String.format(
 				"Jersey app started with WADL available at " + "%sapplication.wadl\nHit enter to stop it...",
 				BASE_URI));
 
+		//open H2 and wadl in browser
 		showBrowerStuff();
 
+		//wait until key pressed
 		System.in.read();
 		server.stop();
 
