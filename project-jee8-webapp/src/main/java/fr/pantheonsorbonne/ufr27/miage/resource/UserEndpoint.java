@@ -41,7 +41,7 @@ public class UserEndpoint {
 		try {
 			return dao.getUserFromId(userId);
 		} catch (NoSuchUserException e) {
-			throw new WebApplicationException(404);
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
 	}
 
