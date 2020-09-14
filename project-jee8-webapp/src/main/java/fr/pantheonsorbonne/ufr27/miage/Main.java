@@ -12,6 +12,7 @@ import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -20,6 +21,8 @@ import org.glassfish.jersey.linking.DeclarativeLinkingFeature;
 import org.glassfish.jersey.process.internal.RequestScoped;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.h2.tools.Server;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
@@ -51,6 +54,8 @@ import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
 public class Main {
 
 	public static final String BASE_URI = "http://localhost:8080/";
+	
+	public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public static HttpServer startServer() {
 
@@ -96,11 +101,13 @@ public class Main {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-
+		
 		Locale.setDefault(Locale.ENGLISH);
 		SLF4JBridgeHandler.removeHandlersForRootLogger();
 		SLF4JBridgeHandler.install();
 		final HttpServer server = startServer();
+		
+		Persistence.createEntityManagerFactory("default").createEntityManager();
 
 		BrokerUtils.startBroker();
 
@@ -109,6 +116,9 @@ public class Main {
 		System.out.println(String.format(
 				"Jersey app started with WADL available at " + "%sapplication.wadl\nHit enter to stop it...",
 				BASE_URI));
+
+		showBrowerStuff();
+
 		System.in.read();
 		server.stop();
 
@@ -121,13 +131,24 @@ public class Main {
 
 			server = server.start();
 
-			if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-				Desktop.getDesktop().browse(new URI("http://localhost:8082"));
-
-			}
-		} catch (SQLException | IOException | URISyntaxException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	private static void showBrowerStuff()  {
+		
+		
+		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			try {
+				Desktop.getDesktop().browse(new URI("http://localhost:8082"));
+				Desktop.getDesktop().browse(new URI("http://localhost:8080/application.wadl"));
+			} catch (IOException | URISyntaxException e) {
+				logger.warn("failed to show browser stuff");
+			}
+			
+
 		}
 	}
 }
