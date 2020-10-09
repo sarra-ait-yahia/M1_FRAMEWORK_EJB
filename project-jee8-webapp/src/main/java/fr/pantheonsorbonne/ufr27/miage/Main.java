@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
 
-import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
@@ -99,6 +98,11 @@ public class Main {
 		final HttpServer server = startServer();
 		
 		BrokerUtils.startBroker();
+		
+		PersistenceConf pc = 		new PersistenceConf();
+		pc.getEM();
+		pc.launchH2WS();
+		
 		
 		
 		System.out.println(String.format(

@@ -7,11 +7,9 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.ext.Provider;
 
 import org.h2.tools.Server;
 
@@ -37,7 +35,7 @@ public class PersistenceConf {
 
 	}
 
-	private final EntityManagerFactory factory = javax.persistence.Persistence.createEntityManagerFactory("h2");
+	private final EntityManagerFactory factory = javax.persistence.Persistence.createEntityManagerFactory("default");
 
 	@Produces
 	public EntityManager getEM() {
