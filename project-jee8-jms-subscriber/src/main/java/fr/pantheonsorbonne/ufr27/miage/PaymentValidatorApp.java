@@ -6,6 +6,8 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
+import fr.pantheonsorbonne.ufr27.miage.jms.PaymentProcessorBean;
+
 /**
  * Hello world!
  *
