@@ -62,7 +62,7 @@ public class UserEndpoint {
 	public Response updateUserAddress(@PathParam("userId") int userId, Address address) {
 		try {
 			userService.updateUserAddress(userId, address);
-			return Response.ok().build();
+			return Response.noContent().build();
 		} catch (NoSuchUserException e) {
 			throw new WebApplicationException(404);
 		}
