@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage.ejb;
+package service;
 
 public interface InvoicingService {
 

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
+package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
 import java.util.Date;
 
@@ -13,8 +13,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
-import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
-import fr.pantheonsorbonne.ufr27.miage.ejb.InvoicingService;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.exception.UserHasDebtException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Address;
@@ -22,6 +20,8 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.Card;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;
+import service.GymService;
+import service.InvoicingService;
 
 @ManagedBean
 public class GymServiceImpl implements GymService {

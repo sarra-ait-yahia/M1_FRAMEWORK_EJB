@@ -23,17 +23,6 @@ import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
-
-import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
-import fr.pantheonsorbonne.ufr27.miage.ejb.InvoicingService;
-import fr.pantheonsorbonne.ufr27.miage.ejb.MailingService;
-import fr.pantheonsorbonne.ufr27.miage.ejb.PaymentService;
-import fr.pantheonsorbonne.ufr27.miage.ejb.UserService;
-import fr.pantheonsorbonne.ufr27.miage.ejb.impl.GymServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.ejb.impl.InvoicingServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.ejb.impl.MailingServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.ejb.impl.PaymentServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.ejb.impl.UserServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
 import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
@@ -41,6 +30,16 @@ import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentAckQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.GymServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.InvoicingServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.MailingServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.PaymentServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.UserServiceImpl;
+import service.GymService;
+import service.InvoicingService;
+import service.MailingService;
+import service.PaymentService;
+import service.UserService;
 
 /**
  * Main class.

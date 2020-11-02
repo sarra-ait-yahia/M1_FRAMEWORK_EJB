@@ -1,10 +1,10 @@
-package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
+package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
 import javax.ejb.Stateless;
 
-import fr.pantheonsorbonne.ufr27.miage.ejb.MailingService;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Address;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Invoice;
+import service.MailingService;
 
 @Stateless
 public class MailingServiceImpl implements MailingService {

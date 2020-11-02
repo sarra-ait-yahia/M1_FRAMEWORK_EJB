@@ -12,8 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;
+import service.GymService;;
 
 @Path("membership/")
 public class MemberShipEndpoint {

@@ -1,4 +1,6 @@
-package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
+package fr.pantheonsorbonne.ufr27.miage.service.impl;
+
+import java.io.StringWriter;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
@@ -12,14 +14,17 @@ import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 import javax.persistence.EntityManager;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
-import fr.pantheonsorbonne.ufr27.miage.ejb.PaymentService;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoDebtException;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Payment;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
+import service.PaymentService;
 
 @ApplicationScoped
 @ManagedBean
@@ -42,7 +47,6 @@ public class PaymentServiceImpl implements PaymentService {
 
 	private Session session;
 
-	
 	private MessageProducer messageProducer;
 
 	@PostConstruct
@@ -73,18 +77,20 @@ public class PaymentServiceImpl implements PaymentService {
 			p.getInvoices().addAll(invoiceDao.getUnpaiedInvoices(userId));
 			em.persist(p);
 
-			Message message = session.createMessage();
-			message.setStringProperty("ccnumber", info.getNumber());
-			message.setStringProperty("date", info.getValidityDate());
-			message.setIntProperty("ccv", info.getCcv());
-			message.setDoubleProperty("amount", amount);
-			message.setIntProperty("userId", userId);
+			TextMessage message = session.createTextMessage();
+
+			JAXBContext context = JAXBContext.newInstance(Ccinfo.class);
+			StringWriter writer = new StringWriter();
+			context.createMarshaller().marshal(info, writer);
+
+			message.setText(writer.toString());
 			message.setIntProperty("paymentId", p.getId());
+			message.setDoubleProperty("amount", p.getAmount());
 			messageProducer.send(message);
 			em.getTransaction().commit();
 			return p.getId();
 
-		} catch (JMSException e) {
+		} catch (JMSException | JAXBException e) {
 			em.getTransaction().rollback();
 			throw new RuntimeException("failed to initiate payment", e);
 		}
@@ -107,9 +113,9 @@ public class PaymentServiceImpl implements PaymentService {
 			message.setDoubleProperty("amount", amount);
 			message.setIntProperty("userId", userId);
 			message.setIntProperty("paymentId", p.getId());
-			
+
 			em.getTransaction().commit();
-			
+
 			messageProducer.send(message);
 			return p.getId();
 
@@ -117,7 +123,7 @@ public class PaymentServiceImpl implements PaymentService {
 			em.getTransaction().rollback();
 			throw new RuntimeException("failed to initiate payment", e);
 		}
-		
+
 	}
 
 }

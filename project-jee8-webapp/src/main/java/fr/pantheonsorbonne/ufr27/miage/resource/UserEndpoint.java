@@ -13,12 +13,12 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
-import fr.pantheonsorbonne.ufr27.miage.ejb.UserService;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.exception.UserHasDebtException;
 import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Address;
+import service.GymService;
+import service.UserService;
 
 @Path("/user")
 public class UserEndpoint {

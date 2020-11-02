@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage.ejb;
+package service;
 
 import fr.pantheonsorbonne.ufr27.miage.jpa.Invoice;
 

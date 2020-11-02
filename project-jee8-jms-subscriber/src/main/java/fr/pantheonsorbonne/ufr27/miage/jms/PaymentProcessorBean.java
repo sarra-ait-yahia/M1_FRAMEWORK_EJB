@@ -1,5 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.jms;
 
+import java.io.StringReader;
+
 import javax.annotation.PostConstruct;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -13,6 +15,13 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
+import com.sun.tools.xjc.model.CClassInfo;
+
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
 
 @ApplicationScoped
 public class PaymentProcessorBean {
@@ -46,31 +55,28 @@ public class PaymentProcessorBean {
 			consumer = session.createConsumer(queuePayment);
 			producer = session.createProducer(queueAck);
 
-			
-
 		} catch (JMSException e) {
 			throw new RuntimeException("failed to create JMS Session", e);
 		}
 
 	}
 
-	
-	public void onMessage(Message message) {
+	public void onMessage(TextMessage message) {
 		try {
-			String ccnumber = message.getStringProperty("ccnumber");
-			String date = message.getStringProperty("date");
-			int ccv = message.getIntProperty("ccv");
-			double amount = message.getDoubleProperty("amount");
-			int paymentId = message.getIntProperty("paymentId");
 
-			if (isPaymentValdated(ccnumber, date, ccv, amount)) {
+			JAXBContext context = JAXBContext.newInstance(Ccinfo.class);
+			StringReader reader = new StringReader(message.getText());
+			double amount = message.getDoubleProperty("amount");
+			Ccinfo ccinfo = (Ccinfo) context.createUnmarshaller().unmarshal(reader);
+
+			if (isPaymentValdated(ccinfo.getNumber(), ccinfo.getValidityDate(), ccinfo.getCcv(), amount)) {
 				Message outgoingMessage = this.session.createMessage();
-				outgoingMessage.setIntProperty("paymentId", paymentId);
+				outgoingMessage.setIntProperty("paymentId", message.getIntProperty("paymentId"));
 				outgoingMessage.setBooleanProperty("validated", true);
 				producer.send(outgoingMessage);
 			}
 
-		} catch (JMSException e) {
+		} catch (JMSException | JAXBException e) {
 			throw new RuntimeException("failed to process payment", e);
 		}
 
@@ -78,7 +84,9 @@ public class PaymentProcessorBean {
 
 	private boolean isPaymentValdated(String ccnumber, String date, int ccv, double amount) {
 		try {
+			System.out.println("processing payment");
 			Thread.sleep(10000);
+			System.out.println("processing payment [done]");
 		} catch (InterruptedException e) {
 
 			e.printStackTrace();
@@ -88,10 +96,9 @@ public class PaymentProcessorBean {
 
 	}
 
-
 	public void consume() throws JMSException {
-		
-		onMessage(consumer.receive());
+
+		onMessage((TextMessage) consumer.receive());
 	}
 
 }
