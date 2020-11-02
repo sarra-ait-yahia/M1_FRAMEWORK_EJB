@@ -23,22 +23,23 @@ import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.UserDAO;
+
 import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.InvoicingService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.MailingService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PaymentService;
+import fr.pantheonsorbonne.ufr27.miage.ejb.UserService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.GymServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.InvoicingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.MailingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.PaymentServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.ejb.impl.UserServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
 import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentAckQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentQueueSupplier;
-import fr.pantheonsorbonne.ufr27.miage.jms.payment.PaymentProcessorBean;
 import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
 
 /**
@@ -65,17 +66,19 @@ public class Main {
 						bind(PaymentServiceImpl.class).to(PaymentService.class);
 						bind(InvoicingServiceImpl.class).to(InvoicingService.class);
 						bind(InvoiceDAO.class).to(InvoiceDAO.class);
-						bind(UserDAO.class).to(UserDAO.class);
+						bind(UserServiceImpl.class).to(UserService.class);
 						bind(MailingServiceImpl.class).to(MailingService.class);
 						bind(PaymentDAO.class).to(PaymentDAO.class);
 						bindFactory(EMFFactory.class).to(EntityManagerFactory.class).in(Singleton.class);
 						bindFactory(EMFactory.class).to(EntityManager.class).in(RequestScoped.class);
 						bindFactory(ConnectionFactorySupplier.class).to(ConnectionFactory.class).in(Singleton.class);
-						bindFactory(PaymentAckQueueSupplier.class).to(Queue.class).named("PaymentAckQueue").in(Singleton.class);
-						bindFactory(PaymentQueueSupplier.class).to(Queue.class).named("PaymentQueue").in(Singleton.class);
-						
-						bind(PaymentProcessorBean.class).to(PaymentProcessorBean.class).in(Singleton.class);
-						bind(PaymentValidationAckownledgerBean.class).to(PaymentValidationAckownledgerBean.class).in(Singleton.class);
+						bindFactory(PaymentAckQueueSupplier.class).to(Queue.class).named("PaymentAckQueue")
+								.in(Singleton.class);
+						bindFactory(PaymentQueueSupplier.class).to(Queue.class).named("PaymentQueue")
+								.in(Singleton.class);
+
+						bind(PaymentValidationAckownledgerBean.class).to(PaymentValidationAckownledgerBean.class)
+								.in(Singleton.class);
 
 					}
 
@@ -96,21 +99,18 @@ public class Main {
 		SLF4JBridgeHandler.removeHandlersForRootLogger();
 		SLF4JBridgeHandler.install();
 		final HttpServer server = startServer();
-		
+
 		BrokerUtils.startBroker();
-		
-		PersistenceConf pc = 		new PersistenceConf();
+
+		PersistenceConf pc = new PersistenceConf();
 		pc.getEM();
 		pc.launchH2WS();
-		
-		
-		
+
 		System.out.println(String.format(
 				"Jersey app started with WADL available at " + "%sapplication.wadl\nHit enter to stop it...",
 				BASE_URI));
 		System.in.read();
 		server.stop();
-		
-		
+
 	}
 }

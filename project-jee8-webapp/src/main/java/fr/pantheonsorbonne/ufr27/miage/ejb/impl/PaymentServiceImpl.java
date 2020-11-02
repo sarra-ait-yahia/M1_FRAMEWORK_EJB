@@ -107,8 +107,10 @@ public class PaymentServiceImpl implements PaymentService {
 			message.setDoubleProperty("amount", amount);
 			message.setIntProperty("userId", userId);
 			message.setIntProperty("paymentId", p.getId());
-			messageProducer.send(message);
+			
 			em.getTransaction().commit();
+			
+			messageProducer.send(message);
 			return p.getId();
 
 		} catch (JMSException e) {

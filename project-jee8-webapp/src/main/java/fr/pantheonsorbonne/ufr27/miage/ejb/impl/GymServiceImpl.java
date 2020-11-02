@@ -17,9 +17,11 @@ import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.InvoicingService;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.exception.UserHasDebtException;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Address;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Card;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;
 
 @ManagedBean
 public class GymServiceImpl implements GymService {
@@ -30,11 +32,22 @@ public class GymServiceImpl implements GymService {
 	@Inject
 	InvoicingService is;
 
+	@Inject
+	InvoiceDAO invoiceDao;
+
 	@Override
-	public int createMembership(String lname, String fname) {
+	public int createMembership(FreeTrialPlan plan) {
+
 		Customer customer = new Customer();
-		customer.setLname(lname);
-		customer.setFname(fname);
+		customer.setLname(plan.getUser().getLname());
+		customer.setFname(plan.getUser().getFname());
+
+		Address address = new Address();
+		address.setCountry(plan.getAddress().getCountry());
+		address.setStreeNumber(plan.getAddress().getStreetNumber());
+		address.setStreetName(plan.getAddress().getStreetName());
+		address.setZipCode(plan.getAddress().getZipCode());
+		customer.setAddress(address);
 
 		Contract contract = new Contract();
 		contract.setMonthlyFare(19.99);
@@ -55,9 +68,6 @@ public class GymServiceImpl implements GymService {
 		return customer.getId();
 
 	}
-
-	@Inject
-	InvoiceDAO invoiceDao;
 
 	@Override
 	public void cancelMemberShip(int userId) throws UserHasDebtException, NoSuchUserException {
@@ -88,7 +98,7 @@ public class GymServiceImpl implements GymService {
 
 		customer.setActive(false);
 		em.merge(customer);
-		
+
 		em.getTransaction().commit();
 	}
 
