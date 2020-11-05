@@ -19,6 +19,7 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.Address;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Card;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
+import fr.pantheonsorbonne.ufr27.miage.jpa.VIPCustomer;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;
 import fr.pantheonsorbonne.ufr27.miage.service.GymService;
 import fr.pantheonsorbonne.ufr27.miage.service.InvoicingService;
@@ -38,9 +39,10 @@ public class GymServiceImpl implements GymService {
 	@Override
 	public int createMembership(FreeTrialPlan plan) {
 
-		Customer customer = new Customer();
+		VIPCustomer customer = new VIPCustomer();
 		customer.setLname(plan.getUser().getLname());
 		customer.setFname(plan.getUser().getFname());
+		customer.setVipStatusDeaadline(new Date());
 
 		Address address = new Address();
 		address.setCountry(plan.getAddress().getCountry());
