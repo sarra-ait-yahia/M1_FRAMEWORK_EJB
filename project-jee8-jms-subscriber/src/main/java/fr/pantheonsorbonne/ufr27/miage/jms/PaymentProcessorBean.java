@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.jms;
 
 import java.io.StringReader;
-import java.util.Random;
+
 
 import javax.annotation.PostConstruct;
 
@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
-import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
@@ -21,7 +20,7 @@ import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import com.sun.tools.xjc.model.CClassInfo;
+
 
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
 
@@ -53,7 +52,7 @@ public class PaymentProcessorBean {
 
 			connection = connectionFactory.createConnection("nicolas", "nicolas");
 			connection.start();
-			session = connection.createSession(true, Session.SESSION_TRANSACTED);
+			session = connection.createSession();
 			consumer = session.createConsumer(queuePayment);
 			producer = session.createProducer(queueAck);
 
@@ -87,7 +86,7 @@ public class PaymentProcessorBean {
 	private boolean isPaymentValdated(String ccnumber, String date, int ccv, double amount) {
 		try {
 			System.out.println("processing payment");
-			Thread.sleep(19);
+			Thread.sleep(10000);
 			System.out.println("processing payment [done]");
 		} catch (InterruptedException e) {
 
@@ -99,13 +98,9 @@ public class PaymentProcessorBean {
 	}
 
 	public void consume() throws JMSException {
-		try (JMSContext context = connectionFactory.createContext(JMSContext.SESSION_TRANSACTED);) {
-
+		
 			onMessage((TextMessage) consumer.receive());
-			context.commit();
-		} catch (RuntimeException rte) {
-			System.out.println("unknown exception, client will retry automatically " + rte.getMessage());
-		}
+	
 
 	}
 
