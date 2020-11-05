@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,17 @@ public class Contract {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
+
+	public Coupon getCoupon() {
+		return coupon;
+	}
+
+	public void setCoupon(Coupon coupon) {
+		this.coupon = coupon;
+	}
+
+	@Embedded
+	Coupon coupon;
 
 	public int getId() {
 		return id;
