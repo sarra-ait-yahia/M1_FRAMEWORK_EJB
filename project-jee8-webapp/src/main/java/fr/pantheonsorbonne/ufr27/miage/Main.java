@@ -30,16 +30,16 @@ import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentAckQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
+import fr.pantheonsorbonne.ufr27.miage.service.GymService;
+import fr.pantheonsorbonne.ufr27.miage.service.InvoicingService;
+import fr.pantheonsorbonne.ufr27.miage.service.MailingService;
+import fr.pantheonsorbonne.ufr27.miage.service.PaymentService;
+import fr.pantheonsorbonne.ufr27.miage.service.UserService;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.GymServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.InvoicingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.MailingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.PaymentServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.UserServiceImpl;
-import service.GymService;
-import service.InvoicingService;
-import service.MailingService;
-import service.PaymentService;
-import service.UserService;
 
 /**
  * Main class.

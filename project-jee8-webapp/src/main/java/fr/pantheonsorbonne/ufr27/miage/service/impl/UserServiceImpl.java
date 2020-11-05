@@ -15,7 +15,7 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.Invoice;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Address;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ObjectFactory;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.User;
-import service.UserService;
+import fr.pantheonsorbonne.ufr27.miage.service.UserService;
 
 @ManagedBean
 public class UserServiceImpl implements UserService {

@@ -1,4 +1,4 @@
-package service;
+package fr.pantheonsorbonne.ufr27.miage.service;
 
 import javax.ejb.Remote;
 

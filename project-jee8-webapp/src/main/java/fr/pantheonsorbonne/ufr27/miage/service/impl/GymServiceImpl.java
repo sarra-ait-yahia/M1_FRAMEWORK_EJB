@@ -20,8 +20,8 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.Card;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;
-import service.GymService;
-import service.InvoicingService;
+import fr.pantheonsorbonne.ufr27.miage.service.GymService;
+import fr.pantheonsorbonne.ufr27.miage.service.InvoicingService;
 
 @ManagedBean
 public class GymServiceImpl implements GymService {

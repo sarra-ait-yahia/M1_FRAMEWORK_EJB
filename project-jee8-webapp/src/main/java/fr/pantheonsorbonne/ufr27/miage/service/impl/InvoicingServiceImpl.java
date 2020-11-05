@@ -13,8 +13,8 @@ import javax.persistence.EntityManager;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Invoice;
-import service.InvoicingService;
-import service.MailingService;
+import fr.pantheonsorbonne.ufr27.miage.service.InvoicingService;
+import fr.pantheonsorbonne.ufr27.miage.service.MailingService;
 
 @Stateless
 public class InvoicingServiceImpl implements InvoicingService {

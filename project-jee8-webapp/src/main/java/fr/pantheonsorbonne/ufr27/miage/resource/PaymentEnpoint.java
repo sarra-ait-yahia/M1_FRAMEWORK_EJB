@@ -16,7 +16,7 @@ import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoDebtException;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
-import service.PaymentService;
+import fr.pantheonsorbonne.ufr27.miage.service.PaymentService;
 
 @Path("payment")
 public class PaymentEnpoint {

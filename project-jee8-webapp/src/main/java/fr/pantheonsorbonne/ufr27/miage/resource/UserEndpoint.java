@@ -17,8 +17,8 @@ import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.exception.UserHasDebtException;
 import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Address;
-import service.GymService;
-import service.UserService;
+import fr.pantheonsorbonne.ufr27.miage.service.GymService;
+import fr.pantheonsorbonne.ufr27.miage.service.UserService;
 
 @Path("/user")
 public class UserEndpoint {
