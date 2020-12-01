@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
-import javax.ejb.Remote;
+import jakarta.ejb.Remote;
 
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.exception.UserHasDebtException;

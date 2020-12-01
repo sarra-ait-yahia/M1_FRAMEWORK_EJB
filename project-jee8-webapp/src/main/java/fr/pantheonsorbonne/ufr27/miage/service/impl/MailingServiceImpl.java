@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless;
 
 import fr.pantheonsorbonne.ufr27.miage.jpa.Address;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Invoice;

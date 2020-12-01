@@ -6,11 +6,11 @@ package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
 import java.util.Date;
 
-import javax.annotation.ManagedBean;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.annotation.ManagedBean;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;

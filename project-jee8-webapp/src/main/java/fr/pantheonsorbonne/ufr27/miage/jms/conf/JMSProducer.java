@@ -2,12 +2,12 @@ package fr.pantheonsorbonne.ufr27.miage.jms.conf;
 
 import java.util.Hashtable;
 
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Named;
-import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Named;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.Queue;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

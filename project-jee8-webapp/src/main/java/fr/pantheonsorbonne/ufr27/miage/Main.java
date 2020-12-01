@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
 
-import javax.inject.Singleton;
+
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -40,6 +39,9 @@ import fr.pantheonsorbonne.ufr27.miage.service.impl.InvoicingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.MailingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.PaymentServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.UserServiceImpl;
+import jakarta.ejb.Singleton;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
 /**
  * Main class.

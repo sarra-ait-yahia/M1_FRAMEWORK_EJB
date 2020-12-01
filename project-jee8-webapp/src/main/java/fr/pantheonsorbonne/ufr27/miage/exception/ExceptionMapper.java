@@ -1,11 +1,11 @@
 package fr.pantheonsorbonne.ufr27.miage.exception;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class ExceptionMapper implements javax.ws.rs.ext.ExceptionMapper<WebApplicationException> {
+public class ExceptionMapper implements jakarta.ws.rs.ext.ExceptionMapper<WebApplicationException> {
 	@Override
 	public Response toResponse(WebApplicationException exception) {
 		exception.printStackTrace();

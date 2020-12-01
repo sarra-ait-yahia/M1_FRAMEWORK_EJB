@@ -6,12 +6,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Produces;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+
 
 import org.h2.tools.Server;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.inject.Produces;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 
 public class PersistenceConf {
@@ -35,7 +38,7 @@ public class PersistenceConf {
 
 	}
 
-	private final EntityManagerFactory factory = javax.persistence.Persistence.createEntityManagerFactory("default");
+	private final EntityManagerFactory factory = Persistence.createEntityManagerFactory("default");
 
 	@Produces
 	public EntityManager getEM() {
