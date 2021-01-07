@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+    <xsd:element name="voyage" type="voyage"></xsd:element>
+	<xsd:element name="train" type="train"></xsd:element>
+	<xsd:element name="tableauDeBord" type="tableauDeBord"></xsd:element>
+	<xsd:element name="trajet" type="trajet"></xsd:element>
+	<xsd:element name="segment" type="segment"></xsd:element>
+	<xsd:element name="perturbation" type="perturbation"></xsd:element>
+
+    <xsd:simpleType name="SimpleDouple">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<xjc:javaType name="java.time.Double"
+
+					adapter="fr.pantheonsorbonne.ufr27.miage.model.jaxb.DoubleAdapter" />
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="voyage">
+		<xsd:sequence>
+		    <xsd:element name="idVoyage" type="xsd:string"></xsd:element>
+			<xsd:element name="train" type="train"></xsd:element>
+			<xsd:element name="heureDepart" type="xsd:int"></xsd:element>
+			<xsd:element name="heureArrivee" type="xsd:int"></xsd:element>
+			<xsd:element name="vitesse" type="SimpleDouple"></xsd:element>
+			<xsd:element name="trajet" type="trajet" maxOccurs="unbounded"></xsd:element>
+			<xsd:element name="distance" type="SimpleDouple"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="train">
+		<xsd:sequence>
+			<xsd:element name="idTrain" type="xsd:string"></xsd:element>
+			<xsd:element name="type" type="xsd:string"></xsd:element>
+			<xsd:element name="tableauDeBord" type="tableauDeBord"></xsd:element>
+			<xsd:element name="perturbation" type="perturbation" maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="tableauDeBord">
+		<xsd:sequence>
+			<xsd:element name="Vitesse" type="SimpleDouple" />
+			<xsd:element name="distanceParcouru" type="SimpleDouple" />
+			<xsd:element name="heure" type="xsd:int" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	  <xsd:complexType name="trajet">
+		<xsd:sequence>
+		    <xsd:element name="idTrajet" type="xsd:string"></xsd:element>
+			<xsd:element name="segment" type="segment"> </xsd:element>
+			<xsd:element name="heureDepart" type="xsd:int"></xsd:element>
+			<xsd:element name="heureArrivee" type="xsd:int"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="segment">
+		<xsd:sequence>
+			<xsd:element name="stationA" type="xsd:string"></xsd:element>
+			<xsd:element name="stationB" type="xsd:string"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="perturbation">
+		<xsd:sequence>
+		    <xsd:element name="type" type="xsd:string"></xsd:element>
+			<xsd:element name="heure" type="xsd:int"> </xsd:element>
+			<xsd:element name="modificationVitesse" type="SimpleDouple"></xsd:element>
+			<xsd:element name="duree" type="xsd:int"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>

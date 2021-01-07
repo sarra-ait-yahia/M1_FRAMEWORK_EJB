@@ -1,5 +1,5 @@
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
 
 
 	<xsd:element name="user" type="user"></xsd:element>
