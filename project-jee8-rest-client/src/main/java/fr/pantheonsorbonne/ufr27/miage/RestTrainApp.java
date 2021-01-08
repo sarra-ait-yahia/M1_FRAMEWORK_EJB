@@ -13,18 +13,19 @@ import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Train;
 public class RestTrainApp {
 
 	public static void main(String[] args) throws InterruptedException {
-		ObjectFactory factory = new ObjectFactory();
-		TrainClient train1 = new TrainClient("A");
-		TrainClient train2 = new TrainClient("B");
-		TrainClient train3 = new TrainClient("C");
+		TrainClient train1 = new TrainClient("trainA");
+		TrainClient train2 = new TrainClient("trainB");
+		TrainClient train3 = new TrainClient("trainC");
+		TrainClient train4 = new TrainClient("trainD");
 		
-		train1.getPerturbations().add(factory.createPerturbation("Retard",10,(double)0, 10 ));
-		train2.getPerturbations().add(factory.createPerturbation("Malaise Voyagaeur",30,(double)0, 120 ));
-		train3.getPerturbations().add(factory.createPerturbation("Vent",40,(double)-20, 0 ));
+		train1.getPerturbations().add(new Incident("Accident de personne", 35 , 150 , (double)0));
+		train3.getPerturbations().add(new Retard(35,20));
+		train4.getPerturbations().add(new Incident("Vent",180, 0,(double)-40 ));
 		
 		new Thread(train1).start();
 		new Thread(train2).start();
 		new Thread(train3).start();
+		new Thread(train4).start();
 		
 		Thread.currentThread().join();
 	}

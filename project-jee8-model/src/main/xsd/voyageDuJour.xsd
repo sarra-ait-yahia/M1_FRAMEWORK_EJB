@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+    <xsd:element name="voyageDuJour" type="voyage"></xsd:element>
     <xsd:element name="voyage" type="voyage"></xsd:element>
 	<xsd:element name="train" type="train"></xsd:element>
 	<xsd:element name="tableauDeBord" type="tableauDeBord"></xsd:element>
@@ -19,6 +20,12 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	
+	<xsd:complexType name="voyageDuJour">
+		<xsd:sequence>
+		    <xsd:element name="voyage" type="voyage" maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
 	<xsd:complexType name="voyage">
 		<xsd:sequence>
 		    <xsd:element name="idVoyage" type="xsd:string"></xsd:element>
@@ -26,7 +33,8 @@
 			<xsd:element name="heureDepart" type="xsd:int"></xsd:element>
 			<xsd:element name="heureArrivee" type="xsd:int"></xsd:element>
 			<xsd:element name="vitesse" type="SimpleDouple"></xsd:element>
-			<xsd:element name="trajet" type="trajet" maxOccurs="unbounded"></xsd:element>
+			<xsd:element name="trajet" type="trajet" ></xsd:element>
+			<xsd:element name="passage" type="passage" maxOccurs="unbounded" ></xsd:element>
 			<xsd:element name="distance" type="SimpleDouple"></xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
@@ -45,15 +53,23 @@
 			<xsd:element name="Vitesse" type="SimpleDouple" />
 			<xsd:element name="distanceParcouru" type="SimpleDouple" />
 			<xsd:element name="heure" type="xsd:int" />
+			<xsd:element name="retard" type="xsd:int" />
 		</xsd:sequence>
 	</xsd:complexType>
 	
-	  <xsd:complexType name="trajet">
+	 <xsd:complexType name="trajet">
+		<xsd:sequence>
+		    <xsd:element name="idTrajet" type="xsd:string"></xsd:element>
+			<xsd:element name="segment" type="segment" maxOccurs="unbounded"> </xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	  <xsd:complexType name="passage">
 		<xsd:sequence>
 		    <xsd:element name="idTrajet" type="xsd:string"></xsd:element>
 			<xsd:element name="segment" type="segment"> </xsd:element>
 			<xsd:element name="heureDepart" type="xsd:int"></xsd:element>
 			<xsd:element name="heureArrivee" type="xsd:int"></xsd:element>
+			<xsd:element name="distanceParcouru" type="xsd:double"></xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -61,6 +77,7 @@
 		<xsd:sequence>
 			<xsd:element name="stationA" type="xsd:string"></xsd:element>
 			<xsd:element name="stationB" type="xsd:string"></xsd:element>
+			<xsd:element name="distance" type="xsd:double"></xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 	
