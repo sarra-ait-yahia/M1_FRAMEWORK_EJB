@@ -19,14 +19,5 @@ public class SegmentDAO {
 	@Inject
 	EntityManager em;
 	
-	
-	public int setSegment(String stationDepart, String stationArrivee, double distance) {
-		SegmentJPA segment = new SegmentJPA();
-		segment.setStationArrivee(stationArrivee);
-		segment.setStationDepart(stationDepart);
-		segment.setDistance(distance);
-		em.persist(segment);
-		return 1;
-	}
 
 }

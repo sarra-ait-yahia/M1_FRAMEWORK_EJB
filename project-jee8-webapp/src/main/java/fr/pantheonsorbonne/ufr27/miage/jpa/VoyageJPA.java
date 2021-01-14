@@ -51,8 +51,7 @@ public class VoyageJPA {
 	@OneToMany
 	List<PerturbationJPA> perturbations;
 	
-	@OneToMany
-	List<Reservation> reservations;
+	
 	
 	public LocalDate getDateVoyage() {
 		return dateVoyage;
@@ -118,14 +117,6 @@ public class VoyageJPA {
 		this.perturbations = perturbations;
 	}
 
-	public List<Reservation> getReservations() {
-		return reservations;
-	}
-
-	public void setReservations(List<Reservation> reservations) {
-		this.reservations = reservations;
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -150,8 +141,7 @@ public class VoyageJPA {
 	}
 
 	public VoyageJPA(LocalDate dateVoyage, int heureDepart, int heureArrivee, double vitesse, TrajetJPA trajet,
-			TrainJPA train, List<PassageSegment> passageSegments, Double distance, List<PerturbationJPA> perturbations,
-			List<Reservation> reservations, boolean isVoyageSupprime) {
+			TrainJPA train, List<PassageSegment> passageSegments, Double distance, List<PerturbationJPA> perturbations, boolean isVoyageSupprime) {
 		super();
 		this.dateVoyage = dateVoyage;
 		this.heureDepart = heureDepart;
@@ -162,7 +152,6 @@ public class VoyageJPA {
 		this.passageSegments = passageSegments;
 		this.distance = distance;
 		this.perturbations = perturbations;
-		this.reservations = reservations;
 		this.isVoyageSupprime = isVoyageSupprime;
 	}
 	

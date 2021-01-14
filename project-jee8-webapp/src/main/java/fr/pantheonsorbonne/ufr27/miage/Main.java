@@ -24,8 +24,14 @@ import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.PassageSegmentDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.PassagerDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.PerturbationDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.ReservationDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.SegmentDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.TrainDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.VoyageDAO;
 import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
 import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
@@ -33,6 +39,7 @@ import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentAckQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
+import fr.pantheonsorbonne.ufr27.miage.jpa.jaxb.mapping.JaxbJpaMapper;
 import fr.pantheonsorbonne.ufr27.miage.service.DataService;
 import fr.pantheonsorbonne.ufr27.miage.service.GymService;
 import fr.pantheonsorbonne.ufr27.miage.service.InformationVoyageService;
@@ -47,6 +54,7 @@ import fr.pantheonsorbonne.ufr27.miage.service.impl.InvoicingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.MailingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.PaymentServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.UserServiceImpl;
+import fr.panthonsorbonne.ufr27.miage.repository.VoyageDuJourRepository;
 
 /**
  * Main class.
@@ -73,13 +81,25 @@ public class Main {
 
 						bind(PaymentServiceImpl.class).to(PaymentService.class);
 						bind(InvoicingServiceImpl.class).to(InvoicingService.class);
-						bind(InformationVoyageServiceImpl.class).to(InformationVoyageService.class);
-						bind(InvoiceDAO.class).to(InvoiceDAO.class);
-						bind(SegmentDAO.class).to(SegmentDAO.class);
-						bind(DataServiceImpl.class).to(DataService.class);
 						bind(UserServiceImpl.class).to(UserService.class);
 						bind(MailingServiceImpl.class).to(MailingService.class);
+						bind(InformationVoyageServiceImpl.class).to(InformationVoyageService.class);
+						bind(DataServiceImpl.class).to(DataService.class);
+						
 						bind(PaymentDAO.class).to(PaymentDAO.class);
+					    bind(InvoiceDAO.class).to(InvoiceDAO.class);
+						bind(PassagerDAO.class).to(PassagerDAO.class);
+						bind(PassageSegmentDAO.class).to(PassageSegmentDAO.class);
+						bind(PerturbationDAO.class).to(PerturbationDAO.class);
+						bind(ReservationDAO.class).to(ReservationDAO.class);
+						bind(TrainDAO.class).to(TrainDAO.class);
+						bind(VoyageDAO.class).to(VoyageDAO.class);
+						bind(SegmentDAO.class).to(SegmentDAO.class);
+						
+						bind(VoyageDuJourRepository.class).to(VoyageDuJourRepository.class);
+						bind(JaxbJpaMapper.class).to(JaxbJpaMapper.class);
+					    
+						
 						bindFactory(EMFFactory.class).to(EntityManagerFactory.class).in(Singleton.class);
 						bindFactory(EMFactory.class).to(EntityManager.class).in(RequestScoped.class);
 						bindFactory(ConnectionFactorySupplier.class).to(ConnectionFactory.class).in(Singleton.class);

@@ -41,7 +41,7 @@ public class VoyagesListEndPoint {
 	@GET
 	@Path("/{trainId}")
 	@Produces(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response getListVoyage(@PathParam("trainId") int trainId) {
+	public Response getListVoyage(@PathParam("trainId") String trainId) {
 		try {
 			return Response.ok(service.getListVoyage(trainId)).build();
 		} catch (Exception e) {
