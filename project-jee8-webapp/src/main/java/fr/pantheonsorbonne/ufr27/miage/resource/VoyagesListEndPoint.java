@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;
 import fr.pantheonsorbonne.ufr27.miage.service.GymService;
-import fr.pantheonsorbonne.ufr27.miage.service.UpdateListVoyageService;
+import fr.pantheonsorbonne.ufr27.miage.service.InformationVoyageService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,7 +36,7 @@ import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 public class VoyagesListEndPoint {
 
 	@Inject
-	UpdateListVoyageService service;
+	InformationVoyageService service;
 	
 	@GET
 	@Path("/{trainId}")

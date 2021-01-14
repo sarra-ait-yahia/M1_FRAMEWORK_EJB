@@ -3,7 +3,11 @@ package fr.pantheonsorbonne.ufr27.miage.jpa;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import java.util.List;
+
 import javax.persistence.Entity;
 
 @Entity
@@ -19,25 +23,27 @@ public class PassageSegment {
 	
 	boolean isPassageAjoute;
 	
-	@ManyToOne
-	SegmentJPA segment;
+	@ManyToMany
+	List<SegmentJPA> segments;
 	
+	
+	public PassageSegment() {
+	}
+
+	public PassageSegment(int heureDepart, int heureArrivee, boolean isPassageAjoute, List<SegmentJPA> segments) {
+		super();
+		this.heureDepart = heureDepart;
+		this.heureArrivee = heureArrivee;
+		this.isPassageAjoute = isPassageAjoute;
+		this.segments = segments;
+	}
+
 	public boolean isPassageAjoute() {
 		return isPassageAjoute;
 	}
 
 	public void setIsPassageAjoute(boolean isPassageAjoute) {
 		this.isPassageAjoute = isPassageAjoute;
-	}
-
-	boolean isPassageSupprimee;
-	
-	public boolean isPassageSupprimee() {
-		return isPassageSupprimee;
-	}
-
-	public void setIsPassageSupprimee(boolean isPassageSupprimee) {
-		this.isPassageSupprimee = isPassageSupprimee;
 	}
 
 	
@@ -49,12 +55,12 @@ public class PassageSegment {
 		this.id = id;
 	}
 
-	public SegmentJPA getSegment() {
-		return segment;
+	public List<SegmentJPA> getSegments() {
+		return segments;
 	}
 
-	public void setSegment(SegmentJPA segment) {
-		this.segment = segment;
+	public void setSegments(List<SegmentJPA>  segments) {
+		this.segments = segments;
 	}
 
 	public int getHeureDepart() {

@@ -10,6 +10,7 @@ public class TrainJPA {
 	@Id
 	String id;
 	
+	
 	public String getId() {
 		return id;
 	}
@@ -28,5 +29,13 @@ public class TrainJPA {
 		this.type = type;
 	}
 	
+	public TrainJPA() {
+	}
 	
+	public TrainJPA(String id, String type) {
+		super();
+		this.id = id;
+		this.type = type;
+	}
+
 }

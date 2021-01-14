@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
@@ -18,11 +19,13 @@ import org.glassfish.jersey.process.internal.RequestScoped;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
+import fr.pantheonsorbonne.ufr27.miage.conf.DataSet;
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.SegmentDAO;
 import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
 import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
@@ -30,12 +33,16 @@ import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentAckQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
+import fr.pantheonsorbonne.ufr27.miage.service.DataService;
 import fr.pantheonsorbonne.ufr27.miage.service.GymService;
+import fr.pantheonsorbonne.ufr27.miage.service.InformationVoyageService;
 import fr.pantheonsorbonne.ufr27.miage.service.InvoicingService;
 import fr.pantheonsorbonne.ufr27.miage.service.MailingService;
 import fr.pantheonsorbonne.ufr27.miage.service.PaymentService;
 import fr.pantheonsorbonne.ufr27.miage.service.UserService;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.DataServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.GymServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.InformationVoyageServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.InvoicingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.MailingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.PaymentServiceImpl;
@@ -46,6 +53,8 @@ import fr.pantheonsorbonne.ufr27.miage.service.impl.UserServiceImpl;
  *
  */
 public class Main {
+	@Inject
+	EntityManager em;
 
 	public static final String BASE_URI = "http://localhost:8080/";
 
@@ -64,7 +73,10 @@ public class Main {
 
 						bind(PaymentServiceImpl.class).to(PaymentService.class);
 						bind(InvoicingServiceImpl.class).to(InvoicingService.class);
+						bind(InformationVoyageServiceImpl.class).to(InformationVoyageService.class);
 						bind(InvoiceDAO.class).to(InvoiceDAO.class);
+						bind(SegmentDAO.class).to(SegmentDAO.class);
+						bind(DataServiceImpl.class).to(DataService.class);
 						bind(UserServiceImpl.class).to(UserService.class);
 						bind(MailingServiceImpl.class).to(MailingService.class);
 						bind(PaymentDAO.class).to(PaymentDAO.class);
@@ -104,7 +116,10 @@ public class Main {
 		PersistenceConf pc = new PersistenceConf();
 		pc.getEM();
 		pc.launchH2WS();
-
+		
+		DataService dataset = new DataServiceImpl(pc.getEM());
+        dataset.createData();
+        
 		System.out.println(String.format(
 				"Jersey app started with WADL available at " + "%sapplication.wadl\nHit enter to stop it...",
 				BASE_URI));

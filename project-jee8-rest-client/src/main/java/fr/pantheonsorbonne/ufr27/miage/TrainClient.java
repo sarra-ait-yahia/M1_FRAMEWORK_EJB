@@ -1,8 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Generated;
+import javax.inject.Inject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,12 +12,14 @@ import javax.xml.validation.Validator;
 
 import org.eclipse.persistence.internal.oxm.Marshaller;
 
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ObjectFactory;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Passage;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Perturbation;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.TableauDeBord;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Trajet;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Voyage;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.VoyageDuJour;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -27,11 +31,14 @@ import javax.ws.rs.core.Response.Status.Family;
 
 public class TrainClient implements Runnable{
 
+	@Inject
+	ObjectFactory factory; 
+	
     protected String idTrain;
     protected List<Voyage> listVoyage;
     protected List<Passage> listPassage;
     protected Voyage voyageActuel;
-    protected String type;
+    protected String type = this.voyageActuel.getTrain().getType();
     protected TableauDeBord tableauDeBord;
     protected List<Passage> passages;
     protected Passage passageActuel;
@@ -141,6 +148,11 @@ public class TrainClient implements Runnable{
 	public void setVitesse(double vitesse) {
 		this.vitesse = vitesse;
 	}
+	public void setVitesse(Boolean ChangeVoyage,Boolean withPerturbation) {
+		if(!withPerturbation || ChangeVoyage)
+			this.vitesse = Double.parseDouble(this.voyageActuel.getVitesse());
+		
+	}
 
 
 	public int getTime() {
@@ -174,30 +186,41 @@ public class TrainClient implements Runnable{
 	}
 	
 	public void getListVoyages() {
+		VoyageDuJour voyagesDuTrain = null;
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
 		Response resp = target.path("listVoyageDuTrain").queryParam("trainId", this.idTrain).request().accept(MediaType.APPLICATION_XML).get();
-		String xmlString = resp.readEntity(String.class);
-		/*faire le get et extraire le xsd, mise à jour des données*/
-		/*mettre les voyages dans une liste 
+		if (resp.getStatusInfo().getFamily().equals(Family.SUCCESSFUL)) {
+			
+			voyagesDuTrain = resp.readEntity(VoyageDuJour.class);
+			
+		} else {
+
+			throw new RuntimeException("failed to get voyage du jour" + resp.getStatusInfo().toString());
+		}
+		
+		if(voyagesDuTrain != null) {
+			this.listVoyage = voyagesDuTrain.getVoyages();
+			this.type = listVoyage.get(0).getTrain().getType();
+		}
 	}
 	
-	@SuppressWarnings("deprecation")
-	public void postVoyage(int n) {
+	public void postInfoVoyage() {
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
-		/*faire le get et extraire le xsd, mise à jour des données*/
-		ObjectFactory objFactory = new ObjectFactory();
-        Voyage voyage = (Voyage) objFactory.createVoyage();
-        JAXBContext jaxbContext;
-		try {
-			jaxbContext = JAXBContext.newInstance("fr.pantheonsorbonne.ufr27.miage.model.jaxb");
-			jaxbContext.createMarshaller().marshal(voyage,System.out);
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
+		VoyageDuJour voyageActuel = getVoyageDuJour();
+
+		Response resp = target.path("listVoyageDuTrain").queryParam("trainId", this.idTrain).request().accept(MediaType.APPLICATION_XML)
+				.post(Entity.xml(voyageActuel));
+     }
+	
+	
+	public VoyageDuJour getVoyageDuJour(){
+		VoyageDuJour voyageDuJour = this.factory.createVoyageDuJour();
+		List<Voyage> voyages = new ArrayList(){{ add(getVoyageActuel());}} ;
+		voyageDuJour.setVoyages(voyages);
+		return voyageDuJour;
+		
 	}
 	
 	public void move(int time) {
@@ -215,9 +238,13 @@ public class TrainClient implements Runnable{
 		int compteurVoyage = 1;
 		int nombrePassageVoyage;
 		int compteurPassage = 1;
+		Boolean ChangeVoyage = true;
+		Boolean withPerturbation = false;
 		while (true) {
 			if(this.listVoyage.get(compteurVoyage).getHeureDepart() == time || this.listVoyage.get(compteurVoyage).getHeureDepart() > time) {
 				this.voyageActuel = this.listVoyage.get(compteurVoyage);
+				setVitesse(ChangeVoyage,withPerturbation);
+				ChangeVoyage = false;
 				nombreVoyage = this.listVoyage.size();
 				this.listPassage = this.voyageActuel.getPassages();
 				nombrePassageVoyage = this.listPassage.size();
@@ -231,6 +258,8 @@ public class TrainClient implements Runnable{
 							break;
 						else {
 							compteurVoyage++;
+							ChangeVoyage = true;
+							withPerturbation = false;
 					        this.distanceparcouru = (double) 0 ;
 						}
 					else 
@@ -241,6 +270,7 @@ public class TrainClient implements Runnable{
 			
 			if(time % 5 == 0)
 				getListVoyages();
+			    postInfoVoyage();
 		
 		for (PerturbationTrain p : perturbations) {
 			if (p.getHeure() == time) {

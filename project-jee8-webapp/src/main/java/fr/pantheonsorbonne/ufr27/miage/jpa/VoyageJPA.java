@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.jpa;
 
 import javax.persistence.Id;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ public class VoyageJPA {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
 
-	String dateVoyage;
+	LocalDate dateVoyage;
 	
 	int heureDepart;
 	
@@ -53,11 +54,11 @@ public class VoyageJPA {
 	@OneToMany
 	List<Reservation> reservations;
 	
-	public String getDateVoyage() {
+	public LocalDate getDateVoyage() {
 		return dateVoyage;
 	}
 
-	public void setDateVoyage(String dateVoyage) {
+	public void setDateVoyage(LocalDate dateVoyage) {
 		this.dateVoyage = dateVoyage;
 	}
 
@@ -131,6 +132,38 @@ public class VoyageJPA {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+
+	boolean isVoyageSupprime;
+	
+	public boolean isVoyageSupprime() {
+		return isVoyageSupprime;
+	}
+
+	public void setIsVoyageSupprime(boolean isVoyageSupprime) {
+		this.isVoyageSupprime = isVoyageSupprime;
+	}
+
+	
+	public VoyageJPA() {
+	}
+
+	public VoyageJPA(LocalDate dateVoyage, int heureDepart, int heureArrivee, double vitesse, TrajetJPA trajet,
+			TrainJPA train, List<PassageSegment> passageSegments, Double distance, List<PerturbationJPA> perturbations,
+			List<Reservation> reservations, boolean isVoyageSupprime) {
+		super();
+		this.dateVoyage = dateVoyage;
+		this.heureDepart = heureDepart;
+		this.heureArrivee = heureArrivee;
+		this.vitesse = vitesse;
+		this.trajet = trajet;
+		this.train = train;
+		this.passageSegments = passageSegments;
+		this.distance = distance;
+		this.perturbations = perturbations;
+		this.reservations = reservations;
+		this.isVoyageSupprime = isVoyageSupprime;
 	}
 	
 	
