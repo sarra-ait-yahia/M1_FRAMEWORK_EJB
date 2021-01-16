@@ -14,6 +14,8 @@ import javax.ws.rs.core.Response;
 
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Voyage;
+import fr.pantheonsorbonne.ufr27.miage.service.GestionPerturbationService;
 import fr.pantheonsorbonne.ufr27.miage.service.GymService;
 import fr.pantheonsorbonne.ufr27.miage.service.InformationVoyageService;
 
@@ -36,18 +38,35 @@ import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 public class VoyagesListEndPoint {
 
 	@Inject
-	InformationVoyageService service;
+	InformationVoyageService serviceInfoVoyage;
+	@Inject
+	GestionPerturbationService serviceGestionPerturbation; 
 	
 	@GET
-	@Path("/{trainId}")
+	@Path("/{trainId}/{time}")
 	@Produces(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response getListVoyage(@PathParam("trainId") String trainId) {
+	public Response getListVoyage(@PathParam("trainId") String trainId,@PathParam("time") int time ) {
 		try {
-			return Response.ok(service.getListVoyage(trainId)).build();
+			return Response.ok(serviceInfoVoyage.getListVoyage(trainId,time)).build();
 		} catch (Exception e) {
 			throw new WebApplicationException(404);
 		}
 	}
 
+	/*@Produces(value = { MediaType.APPLICATION_XML})
+	@Consumes(value = { MediaType.APPLICATION_XML})
+	@Path("/{trainId/{time}}")
+	@POST
+	public Response gererPerturbation(@PathParam("trainId") String trainId,@PathParam("time") int time, Voyage voyage) throws URISyntaxException {
+		if(voyage.getTrain().getPerturbation() != null) {
+			serviceInfoVoyage.addPerturbationToBDD();
+			//appeler service GestionPerturbation qui changera tt les voyage
+			// si changer appeler notyInfoGare
+		}
+
+		return Response.created(new URI("/user/" + customerId)).build();
+
+	}
+	*/
 }
 

@@ -17,9 +17,10 @@ public class VoyageDAO {
 	
 	
 	public List<VoyageJPA> getVoyagesDuJour(String idTrain){
-		Query query = em.createQuery("SELECT v FROM VoyageJPA v WHERE v.train.id =:idTrain AND v.dateVoyage =:dateToday", VoyageJPA.class);
+		Query query = em.createQuery("SELECT v FROM VoyageJPA v WHERE v.train.id =:idTrain AND v.dateVoyage =:dateToday AND v.statut =:statut", VoyageJPA.class);
 		query.setParameter("idTrain", idTrain);
 		query.setParameter("dateToday", LocalDate.of(2021, 01, 23));
+		query.setParameter("statut", "a faire");
 		return query.getResultList();
 	}
 

@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage;
+package fr.pantheonsorbonne.ufr27.miage.classe.client;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,7 @@ import javax.xml.validation.Validator;
 
 import org.eclipse.persistence.internal.oxm.Marshaller;
 
+import fr.pantheonsorbonne.ufr27.miage.appel.rest.AccesRest;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ObjectFactory;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Passage;
@@ -29,7 +30,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status.Family;
 
-public class TrainClient implements Runnable{
+public class TrainClient implements Runnable {
 
 	@Inject
 	ObjectFactory factory; 
@@ -43,10 +44,11 @@ public class TrainClient implements Runnable{
     protected List<Passage> passages;
     protected Passage passageActuel;
     protected Double distanceparcouru;
+    protected Perturbation perturbationActuel;
     protected List<PerturbationTrain> perturbations;
-    protected double vitesse;
-    int time = 0;
-    int retard = 0;
+    protected double vitesseActuel;
+    protected int time = 0;
+    protected int retard = 0;
     
     
 	
@@ -140,17 +142,13 @@ public class TrainClient implements Runnable{
 	}
 
 
-	public double getVitesse() {
-		return vitesse;
+	public double getVitesseActuel() {
+		return vitesseActuel;
 	}
 
-
-	public void setVitesse(double vitesse) {
-		this.vitesse = vitesse;
-	}
-	public void setVitesse(Boolean ChangeVoyage,Boolean withPerturbation) {
-		if(!withPerturbation || ChangeVoyage)
-			this.vitesse = Double.parseDouble(this.voyageActuel.getVitesse());
+	public void setVitesseActuel(Boolean ChangeVoyage) {
+		if(ChangeVoyage)
+			this.vitesseActuel = this.voyageActuel.getVitesse();
 		
 	}
 
@@ -181,46 +179,30 @@ public class TrainClient implements Runnable{
 	
 	
 	public void calculeDistanceParcouru(int time) {
-		this.distanceparcouru = this.vitesse * time;
+		this.distanceparcouru = this.vitesseActuel * time;
 		
 	}
 	
-	public void getListVoyages() {
-		VoyageDuJour voyagesDuTrain = null;
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://localhost:8080");
-		Response resp = target.path("listVoyageDuTrain").queryParam("trainId", this.idTrain).request().accept(MediaType.APPLICATION_XML).get();
-		if (resp.getStatusInfo().getFamily().equals(Family.SUCCESSFUL)) {
-			
-			voyagesDuTrain = resp.readEntity(VoyageDuJour.class);
-			
-		} else {
-
-			throw new RuntimeException("failed to get voyage du jour" + resp.getStatusInfo().toString());
-		}
-		
-		if(voyagesDuTrain != null) {
-			this.listVoyage = voyagesDuTrain.getVoyages();
+	
+	public void getVoyagesDuJour(){
+		AccesRest rest = new AccesRest(this.idTrain,this.time);
+		VoyageDuJour voyagesDuJour= rest.getListVoyages();
+		if(voyagesDuJour != null) {
+			this.listVoyage = voyagesDuJour.getVoyages();
 			this.type = listVoyage.get(0).getTrain().getType();
-		}
+		}	
 	}
 	
-	public void postInfoVoyage() {
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://localhost:8080");
-		VoyageDuJour voyageActuel = getVoyageDuJour();
 
-		Response resp = target.path("listVoyageDuTrain").queryParam("trainId", this.idTrain).request().accept(MediaType.APPLICATION_XML)
-				.post(Entity.xml(voyageActuel));
-     }
-	
-	
-	public VoyageDuJour getVoyageDuJour(){
-		VoyageDuJour voyageDuJour = this.factory.createVoyageDuJour();
-		List<Voyage> voyages = new ArrayList(){{ add(getVoyageActuel());}} ;
-		voyageDuJour.setVoyages(voyages);
-		return voyageDuJour;
-		
+	public void postInfoVoyageActuel() {
+		AccesRest rest = new AccesRest(this.idTrain,this.time);
+		Voyage voyageAenvoye = this.voyageActuel.clone();
+		this.tableauDeBord.setDistanceParcouru(this.distanceparcouru);
+		this.tableauDeBord.setHeure(this.time);
+		this.tableauDeBord.setRetard(this.retard);
+		voyageAenvoye.getTrain().setTableauDeBord(this.tableauDeBord);
+		voyageAenvoye.getTrain().setPerturbation(this.perturbationActuel);
+		rest.postInfoVoyage(voyageAenvoye);
 	}
 	
 	public void move(int time) {
@@ -230,36 +212,34 @@ public class TrainClient implements Runnable{
 	}
 	
 	
+	
 	@Override
 	public void run() {
-		
-		getListVoyages();
+		getVoyagesDuJour();
 		int nombreVoyage;
 		int compteurVoyage = 1;
 		int nombrePassageVoyage;
 		int compteurPassage = 1;
 		Boolean ChangeVoyage = true;
-		Boolean withPerturbation = false;
 		while (true) {
 			if(this.listVoyage.get(compteurVoyage).getHeureDepart() == time || this.listVoyage.get(compteurVoyage).getHeureDepart() > time) {
 				this.voyageActuel = this.listVoyage.get(compteurVoyage);
-				setVitesse(ChangeVoyage,withPerturbation);
+				setVitesseActuel(ChangeVoyage);
 				ChangeVoyage = false;
 				nombreVoyage = this.listVoyage.size();
 				this.listPassage = this.voyageActuel.getPassages();
 				nombrePassageVoyage = this.listPassage.size();
-				if(this.listPassage.get(compteurPassage).getHeureDepart() == time){
+				if(this.listPassage.get(compteurPassage).getHeureDepartModifie() == time){
 				      this.passageActuel = this.listPassage.get(compteurPassage);
 				      }
 				move(time);
-				if(this.passageActuel.getHeureArrivee()==time) {
+				if(this.passageActuel.getHeureArriveeModifie()==time) {
 					if(compteurPassage++ >= nombrePassageVoyage )
 						if(compteurVoyage++ >= nombreVoyage)
 							break;
 						else {
 							compteurVoyage++;
 							ChangeVoyage = true;
-							withPerturbation = false;
 					        this.distanceparcouru = (double) 0 ;
 						}
 					else 
@@ -268,18 +248,21 @@ public class TrainClient implements Runnable{
 			    
 			}
 			
-			if(time % 5 == 0)
-				getListVoyages();
-			    postInfoVoyage();
+			if(time % 5 == 0) {
+				getVoyagesDuJour();
+			}
 		
-		for (PerturbationTrain p : perturbations) {
+		/*for (PerturbationTrain p : perturbations) {
 			if (p.getHeure() == time) {
-				
-				//calcul distanceParcouru
-				//postVoyage(i)
+				this.perturbationActuel.setDuree(p.getDuree());
+				this.perturbationActuel.setHeure(p.getHeure());
+				String type = (p instanceof Retard)? "Retard" : ((Incident) p ).getType();
+				this.perturbationActuel.setType(type);
+				this.retard = p.getDuree();
+				postInfoVoyageActuel();
 			}
 		}
-
+*/
 		time++;
 		try {
 			Thread.sleep(1000);

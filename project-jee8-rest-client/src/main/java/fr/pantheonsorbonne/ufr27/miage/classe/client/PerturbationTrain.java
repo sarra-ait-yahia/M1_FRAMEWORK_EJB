@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage;
+package fr.pantheonsorbonne.ufr27.miage.classe.client;
 
 import javax.annotation.Generated;
 import javax.xml.bind.annotation.XmlElement;

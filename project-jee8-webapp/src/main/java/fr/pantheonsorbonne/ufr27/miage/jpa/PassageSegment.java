@@ -18,9 +18,33 @@ public class PassageSegment {
 	int id;
 	
     int heureDepart;
+    
+    int heuredepartModifie;
 	
 	int heureArrivee;
 	
+	int heureArriveeModifie;
+	
+	public int getHeuredepartModifie() {
+		return heuredepartModifie;
+	}
+
+	public void setHeuredepartModifie(int heuredepartModifie) {
+		this.heuredepartModifie = heuredepartModifie;
+	}
+
+	public int getHeureArriveeModifie() {
+		return heureArriveeModifie;
+	}
+
+	public void setHeureArriveeModifie(int heureArriveeModifie) {
+		this.heureArriveeModifie = heureArriveeModifie;
+	}
+
+	public void setPassageAjoute(boolean isPassageAjoute) {
+		this.isPassageAjoute = isPassageAjoute;
+	}
+
 	boolean isPassageAjoute;
 	
 	@ManyToMany
@@ -30,10 +54,12 @@ public class PassageSegment {
 	public PassageSegment() {
 	}
 
-	public PassageSegment(int heureDepart, int heureArrivee, boolean isPassageAjoute, List<SegmentJPA> segments) {
+	public PassageSegment(int heureDepart,int heuredepartModifie , int heureArrivee, int heureArriveeModifie,boolean isPassageAjoute, List<SegmentJPA> segments) {
 		super();
 		this.heureDepart = heureDepart;
+		this.heuredepartModifie = heuredepartModifie;
 		this.heureArrivee = heureArrivee;
+		this.heureArriveeModifie = heureArriveeModifie;
 		this.isPassageAjoute = isPassageAjoute;
 		this.segments = segments;
 	}

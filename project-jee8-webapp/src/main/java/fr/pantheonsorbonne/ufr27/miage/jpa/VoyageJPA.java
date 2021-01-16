@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.jpa;
 
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,16 +28,11 @@ public class VoyageJPA {
 	
 	double vitesse;
 	
+	String direction;
+
 	@ManyToOne
 	TrajetJPA trajet;
 	
-	public TrajetJPA getTrajet() {
-		return trajet;
-	}
-
-	public void setTrajet(TrajetJPA trajet) {
-		this.trajet = trajet;
-	}
 
 	@ManyToOne
 	TrainJPA train;
@@ -51,8 +47,62 @@ public class VoyageJPA {
 	@OneToMany
 	List<PerturbationJPA> perturbations;
 	
+
+	String statut;
 	
+	@ManyToMany
+	List<Gare> garesAdesservir; 
+
+	@ManyToMany
+	List<Quai> quaiAdesservir; 
 	
+	public List<Quai> getQuaiAdesservir() {
+		return quaiAdesservir;
+	}
+
+	public void setQuaiAdesservir(List<Quai> quaiAdesservir) {
+		this.quaiAdesservir = quaiAdesservir;
+	}
+
+	
+	public List<Gare> getGaresAdesservir() {
+		return garesAdesservir;
+	}
+
+	public void setGaresAdesservir(List<Gare> garesAdesservir) {
+		this.garesAdesservir = garesAdesservir;
+	}
+
+	public VoyageJPA() {
+	}
+
+	public VoyageJPA(LocalDate dateVoyage, int heureDepart, int heureArrivee, double vitesse, TrajetJPA trajet,String direction,
+			TrainJPA train, List<PassageSegment> passageSegments, Double distance, List<PerturbationJPA> perturbations, String statut, List<Gare> garesAdesservir, List<Quai> quaiAdesservir) {
+		super();
+		this.dateVoyage = dateVoyage;
+		this.heureDepart = heureDepart;
+		this.heureArrivee = heureArrivee;
+		this.vitesse = vitesse;
+		this.trajet = trajet;
+		this.direction = direction;
+		this.train = train;
+		this.passageSegments = passageSegments;
+		this.distance = distance;
+		this.perturbations = perturbations;
+		this.statut = statut;
+		this.garesAdesservir = garesAdesservir; 
+        this.quaiAdesservir = quaiAdesservir; 
+		
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public LocalDate getDateVoyage() {
 		return dateVoyage;
 	}
@@ -83,6 +133,22 @@ public class VoyageJPA {
 
 	public void setVitesse(double vitesse) {
 		this.vitesse = vitesse;
+	}
+
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+
+	public TrajetJPA getTrajet() {
+		return trajet;
+	}
+
+	public void setTrajet(TrajetJPA trajet) {
+		this.trajet = trajet;
 	}
 
 	public TrainJPA getTrain() {
@@ -117,43 +183,14 @@ public class VoyageJPA {
 		this.perturbations = perturbations;
 	}
 
-	public int getId() {
-		return id;
+	public String getStatut() {
+		return statut;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setStatut(String statut) {
+		this.statut = statut;
 	}
-
-
-	boolean isVoyageSupprime;
 	
-	public boolean isVoyageSupprime() {
-		return isVoyageSupprime;
-	}
-
-	public void setIsVoyageSupprime(boolean isVoyageSupprime) {
-		this.isVoyageSupprime = isVoyageSupprime;
-	}
-
-	
-	public VoyageJPA() {
-	}
-
-	public VoyageJPA(LocalDate dateVoyage, int heureDepart, int heureArrivee, double vitesse, TrajetJPA trajet,
-			TrainJPA train, List<PassageSegment> passageSegments, Double distance, List<PerturbationJPA> perturbations, boolean isVoyageSupprime) {
-		super();
-		this.dateVoyage = dateVoyage;
-		this.heureDepart = heureDepart;
-		this.heureArrivee = heureArrivee;
-		this.vitesse = vitesse;
-		this.trajet = trajet;
-		this.train = train;
-		this.passageSegments = passageSegments;
-		this.distance = distance;
-		this.perturbations = perturbations;
-		this.isVoyageSupprime = isVoyageSupprime;
-	}
 	
 	
 }

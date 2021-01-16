@@ -30,8 +30,8 @@ public class JMSProducer {
 		Hashtable<String, String> jndiBindings = new Hashtable<>();
 		jndiBindings.put(Context.INITIAL_CONTEXT_FACTORY, ActiveMQInitialContextFactory.class.getName());
 		jndiBindings.put("connectionFactory.ConnectionFactory", "tcp://localhost:61616");
-		jndiBindings.put("app/jms/PaymentAckQueue", "PaymentAckQueue");
-		jndiBindings.put("app/jms/PaymentQueue", "PaymentQueue");
+		jndiBindings.put("app/jms/VoyageAckQueue", "VoyageAckQueue");
+		jndiBindings.put("app/jms/VoyageQueue", "VoyageQueue");
 
 		Context c = null;
 		try {
@@ -47,15 +47,15 @@ public class JMSProducer {
 	}
 
 	@Produces
-	@Named("diplomaRequests")
+	@Named("VoyageAckQueue")
 	public Queue getJMSQueueRequest() throws NamingException {
-		return (Queue) JNDI_CONTEXT.lookup("DiplomaRequest");
+		return (Queue) JNDI_CONTEXT.lookup("VoyageAckQueue");
 	}
 	
 	@Produces
-	@Named("diplomaFiles")
+	@Named("VoyageQueue")
 	public Queue getJMSQueueFile() throws NamingException {
-		return (Queue) JNDI_CONTEXT.lookup("diplomaFiles");
+		return (Queue) JNDI_CONTEXT.lookup("VoyageQueue");
 	}
 
 	@Produces

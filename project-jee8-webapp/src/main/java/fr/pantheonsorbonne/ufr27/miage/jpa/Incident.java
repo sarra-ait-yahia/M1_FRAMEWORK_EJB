@@ -16,7 +16,6 @@ import javax.xml.bind.annotation.XmlElement;
 @Table(name="Incident")
 public class Incident extends PerturbationJPA{
 	String type;
-	double modificationVitesse;
 	
 	public String getType() {
 		return type;
@@ -24,12 +23,5 @@ public class Incident extends PerturbationJPA{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public double getModificationVitesse() {
-		return modificationVitesse;
-	}
-	public void setModificationVitesse(double modificationVitesse) {
-		this.modificationVitesse = modificationVitesse;
-	}
-	
 
 }

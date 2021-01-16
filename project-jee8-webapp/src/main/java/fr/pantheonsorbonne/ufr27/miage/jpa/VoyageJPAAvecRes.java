@@ -29,10 +29,10 @@ public class VoyageJPAAvecRes extends VoyageJPA {
 	}
 
 	public VoyageJPAAvecRes(LocalDate dateVoyage, int heureDepart, int heureArrivee, double vitesse, TrajetJPA trajet,
-			TrainJPA train, List<PassageSegment> passageSegments, Double distance, List<PerturbationJPA> perturbations,
-			boolean isVoyageSupprime,List<Reservation> reservations) {
-		super(dateVoyage, heureDepart, heureArrivee, vitesse, trajet, train, passageSegments, distance, perturbations,
-				isVoyageSupprime);
+			String direction,TrainJPA train, List<PassageSegment> passageSegments, Double distance, List<PerturbationJPA> perturbations,
+			String statut, List<Gare> garesAdesservir, List<Quai> quaiAdesservir,List<Reservation> reservations) {
+		super(dateVoyage, heureDepart, heureArrivee, vitesse, trajet,direction, train, passageSegments, distance, perturbations,
+				statut, garesAdesservir,quaiAdesservir);
 		this.reservations = reservations;
 	}
 
