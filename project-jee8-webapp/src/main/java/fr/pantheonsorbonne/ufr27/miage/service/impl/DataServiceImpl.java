@@ -56,7 +56,7 @@ public class DataServiceImpl implements DataService {
 	
 	@Override
 	public void createData() {
-		em.getTransaction().begin();
+		this.em.getTransaction().begin();
 		try {
 			//createSegments
 			SegmentJPA segment1 = new SegmentJPA("A","B",25);
@@ -154,33 +154,52 @@ public class DataServiceImpl implements DataService {
 			
 			
 			//create Quai
-			Quai quai1 = new Quai(1);
-			listData.add(quai1);
-			Quai quai2 = new Quai(2);
-			listData.add(quai2);
-			Quai quai3 = new Quai(3);
-			listData.add(quai3);
-			Quai quai4 = new Quai(4);
-			listData.add(quai4);
-			
+			Quai quaiA1 = new Quai("A1");
+			listData.add(quaiA1);
+			Quai quaiA2 = new Quai("A2");
+			listData.add(quaiA2);
+			Quai quaiB1 = new Quai("B1");
+			listData.add(quaiB1);
+			Quai quaiB2 = new Quai("B2");
+			listData.add(quaiB2);
+			Quai quaiB3 = new Quai("B3");
+			listData.add(quaiB3);
+			Quai quaiC2 = new Quai("C2");
+			listData.add(quaiC2);
+			Quai quaiC3 = new Quai("C3");
+			listData.add(quaiC3);
+			Quai quaiD1 = new Quai("D1");
+			listData.add(quaiD1);
+			Quai quaiD3 = new Quai("D3");
+			listData.add(quaiD3);
+			Quai quaiD4 = new Quai("D4");
+			listData.add(quaiD4);
+			Quai quaiE1 = new Quai("E1");
+			listData.add(quaiE1);
+			Quai quaiF2 = new Quai("F2");
+			listData.add(quaiF2);
+			Quai quaiG1 = new Quai("G1");
+			listData.add(quaiG1);
+			Quai quaiH2 = new Quai("H2");
+			listData.add(quaiH2);
 			
 			//createVoyage
 			LocalDate date = LocalDate.of(2021, 01, 23);
-			VoyageJPA voyage1 = new VoyageJPASansRes(date, 5,56, (double)100, trajet1,"aller",train1, new ArrayList() {{ add(passage1); add(passage2); add(passage3);}} , (double)75, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareA); add(gareB); add(gareC);add(gareD);}},new ArrayList() {{ add(quai1); add(quai1); add(quai2);add(quai3);}}) ;
+			VoyageJPA voyage1 = new VoyageJPASansRes(date, 5,5,56,56, (double)100, trajet1,"aller",train1, new ArrayList() {{ add(passage1); add(passage2); add(passage3);}} , (double)75, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareA); add(gareB); add(gareC);add(gareD);}},new ArrayList() {{ add(quaiA1); add(quaiB1); add(quaiC2);add(quaiD3);}}) ;
 			listData.add(voyage1);
-			VoyageJPA voyage2 = new VoyageJPASansRes(date, 70,118, (double)100, trajet1,"retour",train1, new ArrayList() {{ add(passage4); add(passage5);}} , (double)75, new ArrayList<PerturbationJPA>(),"a faire",new ArrayList() {{ add(gareD); add(gareB); add(gareA);}},new ArrayList() {{ add(quai3); add(quai1); add(quai1);}}) ;
+			VoyageJPA voyage2 = new VoyageJPASansRes(date, 70,70,118,118, (double)100, trajet1,"retour",train1, new ArrayList() {{ add(passage4); add(passage5);}} , (double)75, new ArrayList<PerturbationJPA>(),"a faire",new ArrayList() {{ add(gareD); add(gareB); add(gareA);}},new ArrayList() {{ add(quaiD3); add(quaiB1); add(quaiA1);}}) ;
 			listData.add(voyage2);
-			VoyageJPA voyage3 = new VoyageJPASansRes(date, 130,181, (double)100, trajet1,"aller",train1, new ArrayList() {{ add(passage6); add(passage7); add(passage8);}} , (double)75, new ArrayList<PerturbationJPA>(),  "a faire",new ArrayList() {{ add(gareA); add(gareB); add(gareC);add(gareD);}},new ArrayList() {{ add(quai1); add(quai1); add(quai2);add(quai3);}}) ;
+			VoyageJPA voyage3 = new VoyageJPASansRes(date, 130,130,181,181, (double)100, trajet1,"aller",train1, new ArrayList() {{ add(passage6); add(passage7); add(passage8);}} , (double)75, new ArrayList<PerturbationJPA>(),  "a faire",new ArrayList() {{ add(gareA); add(gareB); add(gareC);add(gareD);}},new ArrayList() {{ add(quaiA1); add(quaiB1); add(quaiC2);add(quaiD3);}}) ;
 			listData.add(voyage3);
-			VoyageJPA voyage4 = new VoyageJPASansRes(date, 200,251, (double)100, trajet1,"retour",train1, new ArrayList() {{ add(passage9); add(passage10); add(passage11);}} , (double)75, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareA); add(gareB); add(gareC);add(gareD);}},new ArrayList() {{ add(quai3); add(quai2); add(quai1);add(quai1);}}) ;
+			VoyageJPA voyage4 = new VoyageJPASansRes(date, 200,200,251,251, (double)100, trajet1,"retour",train1, new ArrayList() {{ add(passage9); add(passage10); add(passage11);}} , (double)75, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareD); add(gareC); add(gareB);add(gareA);}},new ArrayList() {{ add(quaiD3); add(quaiC2); add(quaiB1);add(quaiA1);}}) ;
 			listData.add(voyage4);
-			VoyageJPA voyage5 = new VoyageJPASansRes(date, 40,88, (double)100, trajet1,"aller",train2, new ArrayList() {{ add(passage12); add(passage13); }} , (double)75, new ArrayList<PerturbationJPA>(),"a faire",new ArrayList() {{ add(gareA); add(gareB); add(gareD);}},new ArrayList() {{ add(quai2); add(quai2);add(quai1);}}) ;
+			VoyageJPA voyage5 = new VoyageJPASansRes(date, 40,40,88,88, (double)100, trajet1,"aller",train2, new ArrayList() {{ add(passage12); add(passage13); }} , (double)75, new ArrayList<PerturbationJPA>(),"a faire",new ArrayList() {{ add(gareA); add(gareB); add(gareD);}},new ArrayList() {{ add(quaiA2); add(quaiB2);add(quaiD1);}}) ;
 			listData.add(voyage5);
-			VoyageJPA voyage6 = new VoyageJPASansRes(date, 100,151, (double)100, trajet1,"retour",train2, new ArrayList() {{ add(passage14); add(passage15); add(passage16);}} , (double)75, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareD); add(gareC); add(gareB);add(gareA);}},new ArrayList() {{ add(quai1); add(quai3); add(quai2);add(quai2);}}) ;
+			VoyageJPA voyage6 = new VoyageJPASansRes(date, 100,100,151,151, (double)100, trajet1,"retour",train2, new ArrayList() {{ add(passage14); add(passage15); add(passage16);}} , (double)75, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareD); add(gareC); add(gareB);add(gareA);}},new ArrayList() {{ add(quaiD1); add(quaiC3); add(quaiB2);add(quaiA2);}}) ;
 			listData.add(voyage6);
-			VoyageJPA voyage7 = new VoyageJPAAvecRes(date, 2,45, (double)200, trajet2,"aller",train3, new ArrayList() {{ add(passage17); add(passage18); }} , (double)110, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareE); add(gareF); add(gareB);}}, new ArrayList() {{ add(quai1); add(quai2); add(quai3);}}, new ArrayList<Reservation>()) ;
+			VoyageJPA voyage7 = new VoyageJPAAvecRes(date, 2,2,45,45, (double)200, trajet2,"aller",train3, new ArrayList() {{ add(passage17); add(passage18); }} , (double)110, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareE); add(gareF); add(gareB);}}, new ArrayList() {{ add(quaiE1); add(quaiF2); add(quaiB3);}}, new ArrayList<Reservation>()) ;
 			listData.add(voyage7);
-			VoyageJPA voyage8 = new VoyageJPAAvecRes(date, 100,200, (double)200, trajet3,"aller",train4, new ArrayList() {{ add(passage19); add(passage20);}} , (double)300, new ArrayList<PerturbationJPA>(),"a faire", new ArrayList() {{ add(gareD); add(gareG); add(gareH);}},new ArrayList() {{ add(quai4); add(quai1); add(quai2);}}, new ArrayList<Reservation>()) ;
+			VoyageJPA voyage8 = new VoyageJPAAvecRes(date, 100,100,200,200, (double)200, trajet3,"aller",train4, new ArrayList() {{ add(passage19); add(passage20);}} , (double)300, new ArrayList<PerturbationJPA>(),"a faire", new ArrayList() {{ add(gareD); add(gareG); add(gareH);}},new ArrayList() {{ add(quaiD4); add(quaiG1); add(quaiH2);}}, new ArrayList<Reservation>()) ;
 			listData.add(voyage8);
 			
 			IncidentImpact incident1 = new IncidentImpact("incident naturel (vent)","retard");
@@ -193,12 +212,12 @@ public class DataServiceImpl implements DataService {
 			listData.add(incident4);
 			
 			for(Object o : listData){
-				em.persist(o);
+				this.em.persist(o);
 			}
-			em.getTransaction().commit();
+			this.em.getTransaction().commit();
 
 		} catch (Exception e) {
-			em.getTransaction().rollback();
+			this.em.getTransaction().rollback();
 			throw new RuntimeException("failed to initiate data", e);
 		}	
 	}

@@ -5,7 +5,6 @@ import javax.enterprise.inject.se.SeContainerInitializer;
 import javax.jms.JMSException;
 
 import fr.pantheonsorbonne.ufr27.miage.jms.InfoGareBean;
-import fr.pantheonsorbonne.ufr27.miage.jms.PaymentProcessorBean;
 import fr.pantheonsorbonne.ufr27.miage.jms.classe.gare.Gare;
 
 public class InfoGareApp {

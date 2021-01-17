@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.classe.client;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -39,13 +40,13 @@ public class TrainClient implements Runnable {
     protected List<Voyage> listVoyage;
     protected List<Passage> listPassage;
     protected Voyage voyageActuel;
-    protected String type = this.voyageActuel.getTrain().getType();
+    protected String type ;
     protected TableauDeBord tableauDeBord;
-    protected List<Passage> passages;
+    protected List<Passage> passages = new ArrayList<Passage>();
     protected Passage passageActuel;
     protected Double distanceparcouru;
     protected Perturbation perturbationActuel;
-    protected List<PerturbationTrain> perturbations;
+    protected List<PerturbationTrain> perturbations = new ArrayList<PerturbationTrain>();
     protected double vitesseActuel;
     protected int time = 0;
     protected int retard = 0;
@@ -189,6 +190,10 @@ public class TrainClient implements Runnable {
 		VoyageDuJour voyagesDuJour= rest.getListVoyages();
 		if(voyagesDuJour != null) {
 			this.listVoyage = voyagesDuJour.getVoyages();
+			Collections.sort(listVoyage);
+			for (Voyage v : this.listVoyage) {
+				Collections.sort(v.getPassages());
+			}
 			this.type = listVoyage.get(0).getTrain().getType();
 		}	
 	}
@@ -205,51 +210,82 @@ public class TrainClient implements Runnable {
 		rest.postInfoVoyage(voyageAenvoye);
 	}
 	
-	public void move(int time) {
-		if(this.passageActuel.getHeureArrivee()>=time) {
-		     calculeDistanceParcouru(time-this.voyageActuel.getHeureDepart());
+	public void move() {
+		if(this.passageActuel != null) {
+		     calculeDistanceParcouru(this.time-this.voyageActuel.getHeureDepart());
 		}
 	}
 	
-	
+	private int indexVoyageNonsupprime(int index) {
+		int i = index;
+		while (this.listVoyage.get(i).getStatut() == "supprime") {
+			i++;
+		}
+		return i;
+	}
 	
 	@Override
 	public void run() {
 		getVoyagesDuJour();
 		int nombreVoyage;
-		int compteurVoyage = 1;
+		int compteurVoyage = indexVoyageNonsupprime(0);
 		int nombrePassageVoyage;
-		int compteurPassage = 1;
+		int compteurPassage = 0;
 		Boolean ChangeVoyage = true;
 		while (true) {
-			if(this.listVoyage.get(compteurVoyage).getHeureDepart() == time || this.listVoyage.get(compteurVoyage).getHeureDepart() > time) {
+			if(this.listVoyage.get(compteurVoyage).getHeureDepartModifie() == time ) {
 				this.voyageActuel = this.listVoyage.get(compteurVoyage);
-				setVitesseActuel(ChangeVoyage);
-				ChangeVoyage = false;
-				nombreVoyage = this.listVoyage.size();
-				this.listPassage = this.voyageActuel.getPassages();
-				nombrePassageVoyage = this.listPassage.size();
-				if(this.listPassage.get(compteurPassage).getHeureDepartModifie() == time){
-				      this.passageActuel = this.listPassage.get(compteurPassage);
-				      }
-				move(time);
-				if(this.passageActuel.getHeureArriveeModifie()==time) {
-					if(compteurPassage++ >= nombrePassageVoyage )
-						if(compteurVoyage++ >= nombreVoyage)
-							break;
-						else {
-							compteurVoyage++;
-							ChangeVoyage = true;
-					        this.distanceparcouru = (double) 0 ;
-						}
-					else 
-						compteurPassage++;
-				}
-			    
+			}else if( this.listVoyage.get(compteurVoyage).getHeureDepartModifie() < time) {
+				this.voyageActuel = null;
 			}
+			if(this.voyageActuel != null) {
+				
+					setVitesseActuel(ChangeVoyage);
+					ChangeVoyage = false;
+					nombreVoyage = this.listVoyage.size();
+					this.listPassage = this.voyageActuel.getPassages();
+					nombrePassageVoyage = this.listPassage.size();
+					if(this.listPassage.get(compteurPassage).getHeureDepartModifie() == time){
+					      this.passageActuel = this.listPassage.get(compteurPassage);
+					      }
+					if(this.listPassage.get(compteurPassage).getHeureDepartModifie() < time){
+					      this.passageActuel = null;
+					      }
+					move();
+					if(this.passageActuel.getHeureArriveeModifie()==time) {
+						if(compteurPassage++ >= nombrePassageVoyage )
+							if(compteurVoyage++ >= nombreVoyage)
+								break;
+							else {
+								compteurVoyage = indexVoyageNonsupprime(compteurVoyage++);
+								ChangeVoyage = true;
+						        this.distanceparcouru = (double) 0 ;
+							}
+						else 
+							compteurPassage++;
+					}
+					
+					if(time % 20 == 0) {
+						if(this.passageActuel != null) {
+						  int numSegments = this.passageActuel.getSegments().size();
+						  System.out.print("heure : "+this.time+"train : "+this.idTrain+ " roule entre "+this.passageActuel.getSegments().get(0).getStationA()+ " et "+this.passageActuel.getSegments().get(numSegments-1).getStationB());
+						}
+						  else {
+							Passage passagePrecedent = this.voyageActuel.getPassages().get(compteurPassage-1);
+							int numSegments = passagePrecedent.getSegments().size();
+							System.out.print("heure : "+this.time+"Le train : "+this.idTrain+ " est stationné à la gare : "+this.passageActuel.getSegments().get(0).getStationA()+ " et "+passagePrecedent.getSegments().get(numSegments-1).getStationB());
+							
+						}
+					}
+				    
+				}
 			
 			if(time % 5 == 0) {
 				getVoyagesDuJour();
+			}
+			
+			if(this.voyageActuel == null) {
+				System.out.print("le train: "+this.idTrain+ " n'est pas en train d'effectuer un voyage");
 			}
 		
 		/*for (PerturbationTrain p : perturbations) {

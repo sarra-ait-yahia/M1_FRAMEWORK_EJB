@@ -34,13 +34,14 @@ import javax.ws.rs.core.Response;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 
 
-@Path("/listVoyageDuTrain")
+@Path("listVoyageDuTrain/")
 public class VoyagesListEndPoint {
 
 	@Inject
 	InformationVoyageService serviceInfoVoyage;
-	@Inject
+	/*@Inject
 	GestionPerturbationService serviceGestionPerturbation; 
+	*/
 	
 	@GET
 	@Path("/{trainId}/{time}")

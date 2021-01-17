@@ -20,7 +20,9 @@
 		    <xsd:element name="idVoyage" type="xsd:int"></xsd:element>
 			<xsd:element name="train" type="train"></xsd:element>
 			<xsd:element name="heureDepart" type="xsd:int"></xsd:element>
+			<xsd:element name="heureDepartModifie" type="xsd:int"></xsd:element>
 			<xsd:element name="heureArrivee" type="xsd:int"></xsd:element>
+			<xsd:element name="heureArriveeModifie" type="xsd:int"></xsd:element>
 			<xsd:element name="vitesse" type="xsd:double"></xsd:element>
 			<xsd:element name="trajet" type="trajet" ></xsd:element>
 			<xsd:element name="direction" type="xsd:string"></xsd:element>
@@ -83,7 +85,7 @@
 	
 	<xsd:complexType name="quai">
 		<xsd:sequence>
-			<xsd:element name="numero" type="xsd:int"></xsd:element>
+			<xsd:element name="idQuai" type="xsd:string"></xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 	

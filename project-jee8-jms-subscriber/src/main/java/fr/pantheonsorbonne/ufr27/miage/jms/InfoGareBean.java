@@ -37,7 +37,7 @@ public class InfoGareBean {
 	private Queue queueAck;
 
 	@Inject
-	@Named("VoyagetQueue")
+	@Named("VoyageQueue")
 	private Queue queueVoyage;
 
 	

@@ -6,7 +6,7 @@ public class AffichageVoyage {
 	int heurePrevu;
 	int heureModifie;
 	String statut;
-	int quai;
+	String quai;
 	public String getIdTrain() {
 		return idTrain;
 	}
@@ -31,14 +31,14 @@ public class AffichageVoyage {
 	public void setStatut(String statut) {
 		this.statut = statut;
 	}
-	public int getQuai() {
+	public String getQuai() {
 		return quai;
 	}
-	public void setQuai(int quai) {
+	public void setQuai(String quai) {
 		this.quai = quai;
 	}
 	
-	public AffichageVoyage(String idTrain, int heurePrevu, int heureModifie, String statut, int quai) {
+	public AffichageVoyage(String idTrain, int heurePrevu, int heureModifie, String statut, String quai) {
 		super();
 		this.idTrain = idTrain;
 		this.heurePrevu = heurePrevu;

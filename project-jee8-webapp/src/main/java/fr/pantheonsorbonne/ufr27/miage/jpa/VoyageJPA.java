@@ -24,7 +24,11 @@ public class VoyageJPA {
 	
 	int heureDepart;
 	
+	int heureDepartModifie;
+	
 	int heureArrivee;
+	
+	int heureArriveeModifie;
 	
 	double vitesse;
 	
@@ -41,7 +45,7 @@ public class VoyageJPA {
 	List<PassageSegment> passageSegments;
 	
 	
-	@Transient
+	
 	Double distance;
 	
 	@OneToMany
@@ -76,7 +80,7 @@ public class VoyageJPA {
 	public VoyageJPA() {
 	}
 
-	public VoyageJPA(LocalDate dateVoyage, int heureDepart, int heureArrivee, double vitesse, TrajetJPA trajet,String direction,
+	public VoyageJPA(LocalDate dateVoyage, int heureDepart,int heureDepartModifie, int heureArrivee,int heureArriveeModifie, double vitesse, TrajetJPA trajet,String direction,
 			TrainJPA train, List<PassageSegment> passageSegments, Double distance, List<PerturbationJPA> perturbations, String statut, List<Gare> garesAdesservir, List<Quai> quaiAdesservir) {
 		super();
 		this.dateVoyage = dateVoyage;
@@ -92,6 +96,8 @@ public class VoyageJPA {
 		this.statut = statut;
 		this.garesAdesservir = garesAdesservir; 
         this.quaiAdesservir = quaiAdesservir; 
+        this.heureDepartModifie = heureDepartModifie;
+        this.heureArriveeModifie = heureArriveeModifie; 
 		
 	}
 
@@ -125,6 +131,24 @@ public class VoyageJPA {
 
 	public void setHeureArrivee(int heureArrivee) {
 		this.heureArrivee = heureArrivee;
+	}
+	
+	
+
+	public int getHeureDepartModifie() {
+		return heureDepartModifie;
+	}
+
+	public void setHeureDepartModifie(int heureDepartModifie) {
+		this.heureDepartModifie = heureDepartModifie;
+	}
+
+	public int getHeureArriveeModifie() {
+		return heureArriveeModifie;
+	}
+
+	public void setHeureArriveeModifie(int heureArriveeModifie) {
+		this.heureArriveeModifie = heureArriveeModifie;
 	}
 
 	public double getVitesse() {

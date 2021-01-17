@@ -3,6 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.jpa.jaxb.mapping;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PassageSegment;
 import fr.pantheonsorbonne.ufr27.miage.jpa.SegmentJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.TrajetJPA;
@@ -10,6 +11,7 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.VoyageDuJour;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ObjectFactory;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Passage;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Quai;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Segment;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Train;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Trajet;
@@ -32,10 +34,13 @@ public class JaxbJpaMapper {
 				vJaxb.setIdVoyage(v.getId());
 				vJaxb.setDistance(v.getDistance());
 				vJaxb.setHeureArrivee(v.getHeureArrivee());
+				vJaxb.setHeureArriveeModifie(v.getHeureArriveeModifie());
 				vJaxb.setHeureDepart(v.getHeureDepart());
+				vJaxb.setHeureDepartModifie(v.getHeureDepartModifie());
 				vJaxb.setStatut(v.getStatut());
 				vJaxb.setTrain(t);
 				vJaxb.setVitesse(v.getVitesse());
+				vJaxb.setDirection(v.getDirection());
 				Trajet trajet = factory.createTrajet();
 				trajet.setIdTrajet(v.getTrajet().getId());
 				List<Segment> segmentsTrajet = new ArrayList<Segment>();
@@ -68,6 +73,22 @@ public class JaxbJpaMapper {
 					passages.add(pa);
 				}
 				vJaxb.setPassages(passages);
+				List<fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare> gares = new ArrayList<fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare>();
+				for(Gare g: v.getGaresAdesservir()) {
+					fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare gare = factory.createGare();
+					gare.setNom(g.getNom());
+					gares.add(gare);
+				}
+				vJaxb.setGares(gares);
+				
+				List<Quai> quais = new ArrayList<Quai>();
+				for(fr.pantheonsorbonne.ufr27.miage.jpa.Quai q:v.getQuaiAdesservir()) {
+					Quai quai = factory.createQuai();
+					quai.setIdQuai(q.getIdQuai());
+					quais.add(quai);
+				}
+				
+				vJaxb.setQuais(quais);
 				voyagesJaxb.add(vJaxb);
 			}
 		}

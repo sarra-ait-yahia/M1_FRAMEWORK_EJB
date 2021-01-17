@@ -7,22 +7,32 @@ import javax.persistence.Id;
 public class Quai {
 
 	@Id
-	int numero;
+	String idQuai;
 
-	public int getNumero() {
-		return numero;
+	
+
+	public String getIdQuai() {
+		return idQuai;
 	}
 
-	public void setNumero(int numero) {
-		this.numero = numero;
+
+
+	public void setIdQuai(String idQuai) {
+		this.idQuai = idQuai;
 	}
+
+
 
 	public Quai() {
 	}
-	public Quai(int numero) {
-		super();
-		this.numero = numero;
-	}
 
+
+
+	public Quai(String idQuai) {
+		super();
+		this.idQuai = idQuai;
+	}
+	
+   
 
 }

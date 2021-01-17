@@ -4,7 +4,7 @@ public class AffichageVoyagedepart extends AffichageVoyage{
 	
 	String destination;
 
-	public AffichageVoyagedepart(String idTrain, int heurePrevu, int heureModifie, String statut, int quai,String destination) {
+	public AffichageVoyagedepart(String idTrain, int heurePrevu, int heureModifie, String statut, String quai,String destination) {
 		super(idTrain, heurePrevu, heureModifie, statut, quai);
 		this.destination = destination;
 	}

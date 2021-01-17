@@ -14,11 +14,11 @@ public class VoyageJPASansRes extends VoyageJPA {
 		super();
 	}
 
-	public VoyageJPASansRes(LocalDate dateVoyage, int heureDepart, int heureArrivee, double vitesse, TrajetJPA trajet,
+	public VoyageJPASansRes(LocalDate dateVoyage, int heureDepart,int heureDepartModifie, int heureArrivee, int heureArriveeModifie, double vitesse, TrajetJPA trajet,
 			String direction,TrainJPA train, List<PassageSegment> passageSegments, Double distance, List<PerturbationJPA> perturbations,
 			String statut, List<Gare> garesAdesservir, List<Quai> quaiAdesservir) {
 		
-		super(dateVoyage, heureDepart, heureArrivee, vitesse, trajet,direction, train, passageSegments, distance, perturbations,
+		super(dateVoyage, heureDepart,heureDepartModifie, heureArrivee, heureArriveeModifie,vitesse, trajet,direction, train, passageSegments, distance, perturbations,
 				statut,garesAdesservir,quaiAdesservir);
 	}
 

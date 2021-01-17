@@ -17,7 +17,10 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.persistence.EntityManager;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.namespace.QName;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoDebtException;
@@ -71,11 +74,24 @@ public class AccesJMS {
 
 			TextMessage message = session.createTextMessage();
             
-			JAXBContext context = JAXBContext.newInstance(Voyage.class);
+			/*JAXBContext context = JAXBContext.newInstance(Voyage.class);
 			StringWriter writer = new StringWriter();
 			context.createMarshaller().marshal(voyage, writer);
+             */
+			
+			StringWriter stringWriter = new StringWriter();
+			JAXBContext jaxbContext = JAXBContext.newInstance(Voyage.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-			message.setText(writer.toString());
+			  // format the XML output
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+			QName qName = new QName("fr.pantheonsorbonne.ufr27.miage.model.jaxb", "voyage");
+			JAXBElement<Voyage> root = new JAXBElement<>(qName, Voyage.class, voyage);
+
+			jaxbMarshaller.marshal(root, stringWriter);
+			  
+			message.setText(stringWriter.toString());
 			String gareDesservi = "";
 			for(Gare g : voyage.getGares()) {
 				gareDesservi+= g.getNom();

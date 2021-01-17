@@ -3,7 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.jms.classe.gare;
 public class AffichageVoyageArrivee extends AffichageVoyage {
 	String arrivee;
 	
-	public AffichageVoyageArrivee(String idTrain, int heurePrevu, int heureModifie, String statut, int quai, String arrivee) {
+	public AffichageVoyageArrivee(String idTrain, int heurePrevu, int heureModifie, String statut, String quai, String arrivee) {
 		super(idTrain, heurePrevu, heureModifie, statut, quai);
 		this.arrivee = arrivee;
 	}

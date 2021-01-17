@@ -22,10 +22,10 @@ public class JaxbToAffichageMapper {
 				
 				//extraire le numero de quai
 				int i=0;
-				int quai =0;
+				String quai ="";
 				for(fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare g: voyage.getGares()) {
 					if(g.getNom() == gare.getName()) {
-						quai = voyage.getQuais().get(i).getNumero();
+						quai = voyage.getQuais().get(i).getIdQuai();
 						break;
 					}
 				  i++;
