@@ -44,6 +44,7 @@ import fr.pantheonsorbonne.ufr27.miage.jms.conf.VoyageAckQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.VoyageQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
 import fr.pantheonsorbonne.ufr27.miage.jpa.jaxb.mapping.JaxbJpaMapper;
+import fr.pantheonsorbonne.ufr27.miage.service.AjoutSuppressionVoyageService;
 import fr.pantheonsorbonne.ufr27.miage.service.DataService;
 import fr.pantheonsorbonne.ufr27.miage.service.GestionPerturbationService;
 import fr.pantheonsorbonne.ufr27.miage.service.GymService;
@@ -52,7 +53,9 @@ import fr.pantheonsorbonne.ufr27.miage.service.InvoicingService;
 import fr.pantheonsorbonne.ufr27.miage.service.MailingService;
 import fr.pantheonsorbonne.ufr27.miage.service.NotifyInfoGareService;
 import fr.pantheonsorbonne.ufr27.miage.service.PaymentService;
+import fr.pantheonsorbonne.ufr27.miage.service.RetarderVoyageService;
 import fr.pantheonsorbonne.ufr27.miage.service.UserService;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.AjoutSuppressionVoyageServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.DataServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.GestionPerturbationServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.GymServiceImpl;
@@ -61,7 +64,9 @@ import fr.pantheonsorbonne.ufr27.miage.service.impl.InvoicingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.MailingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.NotifyInfoGareServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.PaymentServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.RetarderVoyageServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.UserServiceImpl;
+import fr.panthonsorbonne.ufr27.miage.repository.VoyageRepository;
 import fr.panthonsorbonne.ufr27.miage.repository.VoyageDuJourRepository;
 
 /**
@@ -95,7 +100,11 @@ public class Main {
 						bind(DataServiceImpl.class).to(DataService.class);
 						bind(GestionPerturbationServiceImpl.class).to(GestionPerturbationService.class);
 						bind(NotifyInfoGareServiceImpl.class).to(NotifyInfoGareService.class);
+						bind(RetarderVoyageServiceImpl.class).to(RetarderVoyageService.class);
+						bind(AjoutSuppressionVoyageServiceImpl.class).to(AjoutSuppressionVoyageService.class);
+						
 								
+						
 						bind(PaymentDAO.class).to(PaymentDAO.class);
 					    bind(InvoiceDAO.class).to(InvoiceDAO.class);
 						bind(PassagerDAO.class).to(PassagerDAO.class);
@@ -107,6 +116,7 @@ public class Main {
 						bind(SegmentDAO.class).to(SegmentDAO.class);
 						
 						bind(VoyageDuJourRepository.class).to(VoyageDuJourRepository.class);
+						bind(VoyageRepository.class).to(VoyageRepository.class);
 						bind(JaxbJpaMapper.class).to(JaxbJpaMapper.class);
 					    
 						

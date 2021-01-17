@@ -15,4 +15,12 @@ import javax.xml.bind.annotation.XmlElement;
 @Table(name="Retard")
 public class Retard extends PerturbationJPA{
 
+	public Retard() {
+		super();
+	}
+
+	public Retard(int heure, int duree) {
+		super(heure, duree);
+	}
+
 }

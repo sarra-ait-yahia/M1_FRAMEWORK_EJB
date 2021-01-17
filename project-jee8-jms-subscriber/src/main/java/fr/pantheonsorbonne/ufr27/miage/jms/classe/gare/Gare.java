@@ -15,6 +15,8 @@ public class Gare implements Runnable{
 
 	int time; 
 	
+	private volatile boolean running = true;
+	
 	
 	
 	String messageIncident;
@@ -53,7 +55,7 @@ public class Gare implements Runnable{
 
 	@Override
 	public void run() {
-		while (true) {
+		while (this.running) {
 			try {
 				this.processor.consume();
 			} catch (JMSException e) {
@@ -65,6 +67,10 @@ public class Gare implements Runnable{
 		
 	}
 
+	public void terminate() {
+        this.running = false;
+    }
+	
 	public void afficherVoyage(List<AffichageVoyage> affichageVoyages) {
 		for(AffichageVoyage affichage: affichageVoyages) {
 			System.out.println(affichage.toString());

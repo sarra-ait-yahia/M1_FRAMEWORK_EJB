@@ -197,9 +197,9 @@ public class DataServiceImpl implements DataService {
 			listData.add(voyage5);
 			VoyageJPA voyage6 = new VoyageJPASansRes(date, 100,100,151,151, (double)100, trajet1,"retour",train2, new ArrayList() {{ add(passage14); add(passage15); add(passage16);}} , (double)75, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareD); add(gareC); add(gareB);add(gareA);}},new ArrayList() {{ add(quaiD1); add(quaiC3); add(quaiB2);add(quaiA2);}}) ;
 			listData.add(voyage6);
-			VoyageJPA voyage7 = new VoyageJPAAvecRes(date, 2,2,45,45, (double)200, trajet2,"aller",train3, new ArrayList() {{ add(passage17); add(passage18); }} , (double)110, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareE); add(gareF); add(gareB);}}, new ArrayList() {{ add(quaiE1); add(quaiF2); add(quaiB3);}}, new ArrayList<Reservation>()) ;
+			VoyageJPA voyage7 = new VoyageJPAAvecRes(date, 2,2,45,45, (double)200, trajet2,"aller",train3, new ArrayList() {{ add(passage17); add(passage18); }} , (double)110, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareE); add(gareF); add(gareB);}}, new ArrayList() {{ add(quaiE1); add(quaiF2); add(quaiB3);}}, new ArrayList<Reservation>(), new ArrayList() {{ add(voyage5);}}) ;
 			listData.add(voyage7);
-			VoyageJPA voyage8 = new VoyageJPAAvecRes(date, 100,100,200,200, (double)200, trajet3,"aller",train4, new ArrayList() {{ add(passage19); add(passage20);}} , (double)300, new ArrayList<PerturbationJPA>(),"a faire", new ArrayList() {{ add(gareD); add(gareG); add(gareH);}},new ArrayList() {{ add(quaiD4); add(quaiG1); add(quaiH2);}}, new ArrayList<Reservation>()) ;
+			VoyageJPA voyage8 = new VoyageJPAAvecRes(date, 100,100,200,200, (double)200, trajet3,"aller",train4, new ArrayList() {{ add(passage19); add(passage20);}} , (double)300, new ArrayList<PerturbationJPA>(),"a faire", new ArrayList() {{ add(gareD); add(gareG); add(gareH);}},new ArrayList() {{ add(quaiD4); add(quaiG1); add(quaiH2);}}, new ArrayList<Reservation>(),new ArrayList<VoyageJPASansRes>()) ;
 			listData.add(voyage8);
 			
 			IncidentImpact incident1 = new IncidentImpact("incident naturel (vent)","retard");

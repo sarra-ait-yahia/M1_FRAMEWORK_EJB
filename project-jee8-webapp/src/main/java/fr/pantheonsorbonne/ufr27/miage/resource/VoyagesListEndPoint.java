@@ -39,9 +39,9 @@ public class VoyagesListEndPoint {
 
 	@Inject
 	InformationVoyageService serviceInfoVoyage;
-	/*@Inject
+	@Inject
 	GestionPerturbationService serviceGestionPerturbation; 
-	*/
+	
 	
 	@GET
 	@Path("/{trainId}/{time}")
@@ -54,20 +54,17 @@ public class VoyagesListEndPoint {
 		}
 	}
 
-	/*@Produces(value = { MediaType.APPLICATION_XML})
+	@Produces(value = { MediaType.APPLICATION_XML})
 	@Consumes(value = { MediaType.APPLICATION_XML})
-	@Path("/{trainId/{time}}")
+	@Path("/{trainId/{time}")
 	@POST
 	public Response gererPerturbation(@PathParam("trainId") String trainId,@PathParam("time") int time, Voyage voyage) throws URISyntaxException {
-		if(voyage.getTrain().getPerturbation() != null) {
-			serviceInfoVoyage.addPerturbationToBDD();
-			//appeler service GestionPerturbation qui changera tt les voyage
-			// si changer appeler notyInfoGare
-		}
+		serviceInfoVoyage.addPerturbationToBDD(voyage.getTrain().getPerturbation(), voyage.getIdVoyage());
+		serviceGestionPerturbation.gererPerturbation(voyage.getTrain().getPerturbation(), voyage.getIdVoyage(), time);
 
-		return Response.created(new URI("/user/" + customerId)).build();
+		return Response.ok().build();
 
 	}
-	*/
+	
 }
 

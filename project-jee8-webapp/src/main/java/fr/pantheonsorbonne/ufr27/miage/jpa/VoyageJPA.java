@@ -80,6 +80,7 @@ public class VoyageJPA {
 	public VoyageJPA() {
 	}
 
+	
 	public VoyageJPA(LocalDate dateVoyage, int heureDepart,int heureDepartModifie, int heureArrivee,int heureArriveeModifie, double vitesse, TrajetJPA trajet,String direction,
 			TrainJPA train, List<PassageSegment> passageSegments, Double distance, List<PerturbationJPA> perturbations, String statut, List<Gare> garesAdesservir, List<Quai> quaiAdesservir) {
 		super();

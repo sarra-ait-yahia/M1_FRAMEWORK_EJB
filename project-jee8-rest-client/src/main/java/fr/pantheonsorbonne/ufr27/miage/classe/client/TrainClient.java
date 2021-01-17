@@ -232,53 +232,65 @@ public class TrainClient implements Runnable {
 		int nombrePassageVoyage;
 		int compteurPassage = 0;
 		Boolean ChangeVoyage = true;
+		int indexVoyagePrecedent = compteurVoyage;
+		int indexPassagePrecedent = compteurPassage;
 		while (true) {
-			if(this.listVoyage.get(compteurVoyage).getHeureDepartModifie() == time ) {
-				this.voyageActuel = this.listVoyage.get(compteurVoyage);
-			}else if( this.listVoyage.get(compteurVoyage).getHeureDepartModifie() < time) {
-				this.voyageActuel = null;
+			nombreVoyage = this.listVoyage.size();
+			if(compteurVoyage < nombreVoyage) {
+				if(this.listVoyage.get(compteurVoyage).getHeureDepartModifie() == time ) {
+					this.voyageActuel = this.listVoyage.get(compteurVoyage);
+				}else if( this.listVoyage.get(compteurVoyage).getHeureDepartModifie() > time && indexVoyagePrecedent != compteurVoyage) {
+					this.voyageActuel = null;
+					this.passageActuel = null;
+					indexVoyagePrecedent = compteurVoyage;
+				}
 			}
 			if(this.voyageActuel != null) {
 				
 					setVitesseActuel(ChangeVoyage);
 					ChangeVoyage = false;
-					nombreVoyage = this.listVoyage.size();
 					this.listPassage = this.voyageActuel.getPassages();
 					nombrePassageVoyage = this.listPassage.size();
 					if(this.listPassage.get(compteurPassage).getHeureDepartModifie() == time){
 					      this.passageActuel = this.listPassage.get(compteurPassage);
 					      }
-					if(this.listPassage.get(compteurPassage).getHeureDepartModifie() < time){
+					if(this.listPassage.get(compteurPassage).getHeureDepartModifie() > time && indexPassagePrecedent != compteurPassage){
 					      this.passageActuel = null;
+					      indexPassagePrecedent = compteurPassage;
 					      }
 					move();
-					if(this.passageActuel.getHeureArriveeModifie()==time) {
-						if(compteurPassage++ >= nombrePassageVoyage )
-							if(compteurVoyage++ >= nombreVoyage)
-								break;
+					if(this.passageActuel != null && this.passageActuel.getHeureArriveeModifie()==time) {
+						if((compteurPassage+1) >= nombrePassageVoyage )
+							if((compteurVoyage+1) >= nombreVoyage)
+								this.voyageActuel = null;
 							else {
+								indexVoyagePrecedent = compteurVoyage;
 								compteurVoyage = indexVoyageNonsupprime(compteurVoyage++);
 								ChangeVoyage = true;
 						        this.distanceparcouru = (double) 0 ;
 							}
-						else 
+						else {
+							indexPassagePrecedent = compteurPassage;
 							compteurPassage++;
+						}
+						    
 					}
 					
 					if(time % 20 == 0) {
 						if(this.passageActuel != null) {
 						  int numSegments = this.passageActuel.getSegments().size();
-						  System.out.print("heure : "+this.time+"train : "+this.idTrain+ " roule entre "+this.passageActuel.getSegments().get(0).getStationA()+ " et "+this.passageActuel.getSegments().get(numSegments-1).getStationB());
+						  System.out.print("heure : "+this.time+"train : "+this.idTrain+ " roule entre "+this.passageActuel.getSegments().get(0).getStationA()+ " et "+this.passageActuel.getSegments().get(numSegments-1).getStationB()+"\n");
 						}
 						  else {
 							Passage passagePrecedent = this.voyageActuel.getPassages().get(compteurPassage-1);
 							int numSegments = passagePrecedent.getSegments().size();
-							System.out.print("heure : "+this.time+"Le train : "+this.idTrain+ " est stationné à la gare : "+this.passageActuel.getSegments().get(0).getStationA()+ " et "+passagePrecedent.getSegments().get(numSegments-1).getStationB());
+							System.out.print("heure : "+this.time+"Le train : "+this.idTrain+ " est stationné à la gare : "+this.passageActuel.getSegments().get(0).getStationA()+ " et "+passagePrecedent.getSegments().get(numSegments-1).getStationB()+"\n");
 							
 						}
 					}
 				    
 				}
+			
 			
 			if(time % 5 == 0) {
 				getVoyagesDuJour();
@@ -287,8 +299,9 @@ public class TrainClient implements Runnable {
 			if(this.voyageActuel == null) {
 				System.out.print("le train: "+this.idTrain+ " n'est pas en train d'effectuer un voyage");
 			}
+			
 		
-		/*for (PerturbationTrain p : perturbations) {
+		for (PerturbationTrain p : perturbations) {
 			if (p.getHeure() == time) {
 				this.perturbationActuel.setDuree(p.getDuree());
 				this.perturbationActuel.setHeure(p.getHeure());
@@ -298,7 +311,7 @@ public class TrainClient implements Runnable {
 				postInfoVoyageActuel();
 			}
 		}
-*/
+
 		time++;
 		try {
 			Thread.sleep(1000);

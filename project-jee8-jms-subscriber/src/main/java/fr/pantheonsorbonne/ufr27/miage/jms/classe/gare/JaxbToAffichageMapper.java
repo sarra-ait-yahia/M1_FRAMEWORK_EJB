@@ -14,32 +14,34 @@ public class JaxbToAffichageMapper {
 		List<AffichageVoyage> affichageVoyages = new ArrayList<AffichageVoyage>();
 		for(Passage p: voyage.getPassages()) {
 			List<Segment> segments = p.getSegments();
-			if(segments.size() == 1) {
-				//déterminer la destination du train ou la gare d'ou il vient
-				char[] charList = voyage.getTrajet().getIdTrajet().toCharArray();
-				String destination = voyage.getDirection() == "aller" ? Character.toString(charList[1]): Character.toString(charList[0]);
-				String arrivee = voyage.getDirection() == "retour" ? Character.toString(charList[1]): Character.toString(charList[0]);
-				
-				//extraire le numero de quai
-				int i=0;
-				String quai ="";
-				for(fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare g: voyage.getGares()) {
-					if(g.getNom() == gare.getName()) {
-						quai = voyage.getQuais().get(i).getIdQuai();
-						break;
-					}
-				  i++;
+			//déterminer la destination du train ou la gare d'ou il vient
+			char[] charList = voyage.getTrajet().getIdTrajet().toCharArray();
+			String destination = voyage.getDirection() == "aller" ? Character.toString(charList[1]): Character.toString(charList[0]);
+			String arrivee = voyage.getDirection() == "retour" ? Character.toString(charList[1]): Character.toString(charList[0]);
+			int numSegments = segments.size();
+			String stationDepart = voyage.getDirection() == "aller" ? segments.get(0).getStationA() : segments.get(numSegments-1).getStationB();
+			String stationArrivee = voyage.getDirection() == "retour" ? segments.get(numSegments-1).getStationB(): segments.get(0).getStationA();
+			//extraire le numero de quai
+			int i=0;
+			String quai ="";
+			for(fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare g: voyage.getGares()) {
+				if(g.getNom() == gare.getName()) {
+					quai = voyage.getQuais().get(i).getIdQuai();
+					break;
 				}
-				
-				if(segments.get(0).getStationA() == gare.getName() && p.getHeureDepartModifie()>= gare.getTime() ) {
+			  i++;
+			}
+			
+			
+			if(stationDepart == gare.getName() && p.getHeureDepartModifie()>= gare.getTime() ) {
 					AffichageVoyage affichageDepart = new AffichageVoyagedepart(voyage.getTrain().getIdTrain(),p.getHeureDepart(),p.getHeureDepartModifie(),voyage.getStatut(),quai, destination);
 					affichageVoyages.add(affichageDepart);
 				}
-			    if(segments.get(0).getStationB() == gare.getName() && p.getHeureArriveeModifie()>= gare.getTime()) {
+		    if(stationArrivee == gare.getName() && p.getHeureArriveeModifie()>= gare.getTime()) {
 			    	AffichageVoyage affichageArrivee = new AffichageVoyageArrivee(voyage.getTrain().getIdTrain(),p.getHeureArrivee(),p.getHeureArriveeModifie(),voyage.getStatut(),quai, arrivee);
 			    	affichageVoyages.add(affichageArrivee);
 				}
-			}
+			
 		}
 		
 		return affichageVoyages;

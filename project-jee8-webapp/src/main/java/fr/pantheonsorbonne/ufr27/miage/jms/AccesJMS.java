@@ -48,6 +48,7 @@ public class AccesJMS {
 	@Inject
 	@Named("VoyageQueue")
 	private Queue queue;
+	
 
 	private Connection connection;
 
@@ -74,10 +75,6 @@ public class AccesJMS {
 
 			TextMessage message = session.createTextMessage();
             
-			/*JAXBContext context = JAXBContext.newInstance(Voyage.class);
-			StringWriter writer = new StringWriter();
-			context.createMarshaller().marshal(voyage, writer);
-             */
 			
 			StringWriter stringWriter = new StringWriter();
 			JAXBContext jaxbContext = JAXBContext.newInstance(Voyage.class);

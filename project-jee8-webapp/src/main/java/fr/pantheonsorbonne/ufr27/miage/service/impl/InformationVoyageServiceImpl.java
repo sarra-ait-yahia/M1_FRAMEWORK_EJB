@@ -8,17 +8,22 @@ import javax.inject.Inject;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoDebtException;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.jms.AccesJMS;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Perturbation;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Voyage;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.VoyageDuJour;
 import fr.pantheonsorbonne.ufr27.miage.service.GestionPerturbationService;
 import fr.pantheonsorbonne.ufr27.miage.service.InformationVoyageService;
 import fr.pantheonsorbonne.ufr27.miage.service.NotifyInfoGareService;
+import fr.panthonsorbonne.ufr27.miage.repository.VoyageRepository;
 import fr.panthonsorbonne.ufr27.miage.repository.VoyageDuJourRepository;
 
 public class InformationVoyageServiceImpl implements InformationVoyageService {
 
 	@Inject
-	VoyageDuJourRepository voyageRepo;
+	VoyageDuJourRepository voyageDuJourRepo;
+	
+	@Inject 
+	VoyageRepository voyageRepo;
 
  	@Inject
  	AccesJMS jms;
@@ -26,7 +31,7 @@ public class InformationVoyageServiceImpl implements InformationVoyageService {
 	@Override
 	public VoyageDuJour getListVoyage(String trainId, int time) {
 		
-		VoyageDuJour listVoyages = this.voyageRepo.getVoyageDuJour(trainId);
+		VoyageDuJour listVoyages = this.voyageDuJourRepo.getVoyageDuJour(trainId);
 		for(Voyage v : listVoyages.getVoyages()) {
 			jms.sendVoyage(v, time);
 		}
@@ -36,8 +41,8 @@ public class InformationVoyageServiceImpl implements InformationVoyageService {
 	}
 
 	@Override
-	public void addPerturbationToBDD() {
-		//ajouter dans la BDD
+	public void addPerturbationToBDD(Perturbation perturbation, int idVoyage) {
+		voyageRepo.ajouterPerturbationJaxb(perturbation, idVoyage);
 	}
 
 }

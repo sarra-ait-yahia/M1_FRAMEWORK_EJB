@@ -38,5 +38,15 @@ public abstract class PerturbationJPA {
 	}
 	int duree;
 	
+	public PerturbationJPA() {
+	}
+	
+	public PerturbationJPA( int heure, int duree) {
+		super();
+		this.heure = heure;
+		this.duree = duree;
+	}
+	
+	
 	
 }

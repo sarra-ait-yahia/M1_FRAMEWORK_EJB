@@ -16,6 +16,7 @@ import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import javax.jms.Topic;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
@@ -32,14 +33,8 @@ public class InfoGareBean {
 	@Inject
 	private ConnectionFactory connectionFactory;
 
-	@Inject
-	@Named("VoyageAckQueue")
-	private Queue queueAck;
-
-	@Inject
-	@Named("VoyageQueue")
-	private Queue queueVoyage;
-
+	
+	private Topic voyageTopic;
 	
 	private Connection connection;
 
@@ -47,8 +42,6 @@ public class InfoGareBean {
 
 	private MessageConsumer consumer;
 	
-
-	private MessageProducer producer;
 	
 	private Gare gare;
 
@@ -68,7 +61,8 @@ public class InfoGareBean {
 			connection = connectionFactory.createConnection("infoCentre", "infoGare");
 			connection.start();
 			session = connection.createSession();
-			consumer = session.createConsumer(queueVoyage);
+			voyageTopic =  session.createTopic("voyageTopic");
+			consumer = session.createConsumer(voyageTopic);
 
 		} catch (JMSException e) {
 			throw new RuntimeException("failed to create JMS Session", e);
@@ -81,16 +75,15 @@ public class InfoGareBean {
 
 			JAXBContext context = JAXBContext.newInstance(Voyage.class);
 			StringReader reader = new StringReader(message.getText());
-			String gareDesservi = message.getStringProperty("GareDesservi");
-			if(gareDesservi.contains(this.gare.getName())) {
-				Voyage voyage = (Voyage) context.createUnmarshaller().unmarshal(reader);
-				this.gare.setTime(message.getIntProperty("time"));
-				JaxbToAffichageMapper mapper = new JaxbToAffichageMapper();
-				List<AffichageVoyage> affichageVoyages = mapper.createAffichageVoyage(voyage, this.gare);
-				if(affichageVoyages.size() != 0)
-					this.gare.afficherVoyage(affichageVoyages);
-			}
 			
+			 Voyage voyage = (Voyage) context.createUnmarshaller().unmarshal(reader);
+			 this.gare.setTime(message.getIntProperty("time"));
+			 JaxbToAffichageMapper mapper = new JaxbToAffichageMapper();
+			 List<AffichageVoyage> affichageVoyages = mapper.createAffichageVoyage(voyage, this.gare);
+			 if(affichageVoyages.size() != 0)
+					this.gare.afficherVoyage(affichageVoyages);
+			 this.gare.terminate();
+				
 		} catch (JMSException | JAXBException e) {
 			throw new RuntimeException("failed in receiving voyage", e);
 		}

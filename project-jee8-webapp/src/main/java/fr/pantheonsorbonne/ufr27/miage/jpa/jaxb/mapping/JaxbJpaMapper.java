@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Incident;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PassageSegment;
+import fr.pantheonsorbonne.ufr27.miage.jpa.PerturbationJPA;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Retard;
 import fr.pantheonsorbonne.ufr27.miage.jpa.SegmentJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.TrajetJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.VoyageDuJour;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ObjectFactory;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Passage;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Perturbation;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Quai;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Segment;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Train;
@@ -98,4 +102,11 @@ public class JaxbJpaMapper {
 	}
 	
 
+	public PerturbationJPA perturbationJaxbToJPA(Perturbation perturbation) {
+		if(perturbation.getType()== "Retard") {
+			return new Retard(perturbation.getHeure(), perturbation.getDuree());
+		}else {
+			return new Incident(perturbation.getHeure(), perturbation.getDuree(), perturbation.getType());
+		}		
+	}
 }

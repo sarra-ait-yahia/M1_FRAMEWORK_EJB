@@ -23,5 +23,13 @@ public class Incident extends PerturbationJPA{
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public Incident() {
+		
+	}
+	public Incident(int heure, int duree, String type) {
+		super(heure, duree);
+		this.type = type;
+	}
 
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.ManagedBean;
+
+import fr.pantheonsorbonne.ufr27.miage.jpa.PerturbationJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -24,4 +26,13 @@ public class VoyageDAO {
 		return query.getResultList();
 	}
 
+	public void ajouterPerturbation(PerturbationJPA perturbation, int idVoyage){
+		em.getTransaction().begin();
+		VoyageJPA voyage = em.find(VoyageJPA.class,idVoyage);
+		List<PerturbationJPA> listPerturbation = new ArrayList<PerturbationJPA>();
+		listPerturbation.add(perturbation);
+		voyage.setPerturbations(listPerturbation);
+		em.getTransaction().commit();
+		
+	}
 }

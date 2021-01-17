@@ -51,8 +51,8 @@ public class AccesRest {
 	
 	public void postInfoVoyage(Voyage voyageActuel ) {
 		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://localhost:8080");
-        Response resp = target.path("listVoyageDuTrain").queryParam("trainId", this.idTrainToAccess).queryParam("time", this.time).request().accept(MediaType.APPLICATION_XML)
+		WebTarget webtarget = client.target("http://localhost:8080");
+        Response resp = client.target(webtarget.path("listVoyageDuTrain").path(""+this.idTrainToAccess).path(""+this.time).getUri()).request().accept(MediaType.APPLICATION_XML)
 				.post(Entity.xml(voyageActuel));
         if (resp.getStatusInfo().getFamily().equals(Family.SUCCESSFUL)) {
 			System.out.println("info voyage sent Successfully");
