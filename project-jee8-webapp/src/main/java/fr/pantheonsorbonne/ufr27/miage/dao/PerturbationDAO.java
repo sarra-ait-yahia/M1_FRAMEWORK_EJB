@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.ManagedBean;
@@ -8,6 +9,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import fr.pantheonsorbonne.ufr27.miage.jpa.PassageSegment;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PerturbationJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
 
@@ -15,6 +17,7 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
 public class PerturbationDAO {
 	@Inject
 	EntityManager em;
+
 
 	
 }

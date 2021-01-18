@@ -100,6 +100,7 @@ import fr.pantheonsorbonne.ufr27.miage.jms.classe.gare.AffichageVoyage;
 				//envoie du message 
 				messageProducer.send(message);
 
+				
 			} catch (JMSException | JAXBException | InterruptedException e) {
 				throw new RuntimeException("failed in receiving voyage", e);
 			}

@@ -59,6 +59,7 @@
 	</xsd:complexType>
 	  <xsd:complexType name="passage">
 		<xsd:sequence>
+		    <xsd:element name="idPassage" type="xsd:int"></xsd:element>
 			<xsd:element name="segment" type="segment" maxOccurs="unbounded"> </xsd:element>
 			<xsd:element name="heureDepart" type="xsd:int"></xsd:element>
 			<xsd:element name="heureArrivee" type="xsd:int"></xsd:element>
@@ -71,6 +72,7 @@
 
 	<xsd:complexType name="segment">
 		<xsd:sequence>
+		    <xsd:element name="idSegment" type="xsd:int"></xsd:element>
 			<xsd:element name="stationA" type="xsd:string"></xsd:element>
 			<xsd:element name="stationB" type="xsd:string"></xsd:element>
 			<xsd:element name="distance" type="xsd:double"></xsd:element>

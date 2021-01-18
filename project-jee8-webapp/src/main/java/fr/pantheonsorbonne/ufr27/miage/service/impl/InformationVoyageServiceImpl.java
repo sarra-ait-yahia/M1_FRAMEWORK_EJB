@@ -25,19 +25,15 @@ public class InformationVoyageServiceImpl implements InformationVoyageService {
 	@Inject 
 	VoyageRepository voyageRepo;
 
- 	@Inject
- 	AccesJMS jms;
+	@Inject 
+	NotifyInfoGareService notifyIngoGareService;
+ 	
 	
 	@Override
 	public VoyageDuJour getListVoyage(String trainId, int time) {
-		
-		VoyageDuJour listVoyages = this.voyageDuJourRepo.getVoyageDuJour(trainId);
-		for(Voyage v : listVoyages.getVoyages()) {
-			jms.sendVoyage(v, time);
-		}
-		
-         return listVoyages;
-		
+		VoyageDuJour listVoyages = this.voyageDuJourRepo.getVoyageDuJour(trainId,0);
+		notifyIngoGareService.sendInfoVoyage(listVoyages.getVoyages(), time);
+		return listVoyages;	
 	}
 
 	@Override

@@ -17,10 +17,9 @@ public class VoyageDuJourRepository {
 	@Inject
 	JaxbJpaMapper mapper;
 	
-	public VoyageDuJour getVoyageDuJour(String trainId) {
-		List<VoyageJPA> voyagesDujour = this.voyageDao.getVoyagesDuJour(trainId);
+	public VoyageDuJour getVoyageDuJour(String trainId, int time) {
+		List<VoyageJPA> voyagesDujour = this.voyageDao.getVoyagesDuJour(trainId,time);
 		return this.mapper.voyageDuJourFromJpa(voyagesDujour);	
 	}
 
-	
 }

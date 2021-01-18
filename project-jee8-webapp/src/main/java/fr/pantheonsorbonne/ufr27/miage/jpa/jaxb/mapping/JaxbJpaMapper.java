@@ -60,6 +60,7 @@ public class JaxbJpaMapper {
 				List<Passage> passages = new ArrayList<Passage>();
 				for(PassageSegment ps : v.getPassageSegments()) {
 					Passage pa = factory.createPassage();
+					pa.setIdPassage(ps.getId());
 					pa.setHeureDepartModifie(ps.getHeuredepartModifie());
 					pa.setHeureArriveeModifie(ps.getHeureArriveeModifie());
 					pa.setHeureDepart(ps.getHeureDepart());
@@ -68,6 +69,7 @@ public class JaxbJpaMapper {
 					List<Segment> segmentsPassage = new ArrayList<Segment>();
 					for(SegmentJPA se : ps.getSegments()) {
 						Segment seg = factory.createSegment();
+						seg.setIdSegment(seg.getIdSegment());
 						seg.setDistance(se.getDistance());
 						seg.setStationA(se.getStationDepart());
 						seg.setStationB(se.getStationArrivee());

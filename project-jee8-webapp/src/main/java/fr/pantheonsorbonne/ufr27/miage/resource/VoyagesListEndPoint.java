@@ -18,6 +18,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Voyage;
 import fr.pantheonsorbonne.ufr27.miage.service.GestionPerturbationService;
 import fr.pantheonsorbonne.ufr27.miage.service.GymService;
 import fr.pantheonsorbonne.ufr27.miage.service.InformationVoyageService;
+import fr.pantheonsorbonne.ufr27.miage.service.NotifyInfoGareService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -39,9 +40,12 @@ public class VoyagesListEndPoint {
 
 	@Inject
 	InformationVoyageService serviceInfoVoyage;
+	
 	@Inject
 	GestionPerturbationService serviceGestionPerturbation; 
 	
+	@Inject 
+	NotifyInfoGareService notifyInfoGareService;
 	
 	@GET
 	@Path("/{trainId}/{time}")
@@ -60,10 +64,9 @@ public class VoyagesListEndPoint {
 	@POST
 	public Response gererPerturbation(@PathParam("trainId") String trainId,@PathParam("time") int time, Voyage voyage) throws URISyntaxException {
 		serviceInfoVoyage.addPerturbationToBDD(voyage.getTrain().getPerturbation(), voyage.getIdVoyage());
-		serviceGestionPerturbation.gererPerturbation(voyage.getTrain().getPerturbation(), voyage.getIdVoyage(), time);
-
+		serviceGestionPerturbation.gererPerturbation(voyage,voyage.getIdVoyage(), time);
+		notifyInfoGareService.sendMessagePerturbationEtVoyages(voyage,time);
 		return Response.ok().build();
-
 	}
 	
 }

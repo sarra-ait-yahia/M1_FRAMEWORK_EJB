@@ -67,6 +67,7 @@ import fr.pantheonsorbonne.ufr27.miage.service.impl.PaymentServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.RetarderVoyageServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.UserServiceImpl;
 import fr.panthonsorbonne.ufr27.miage.repository.VoyageRepository;
+import fr.panthonsorbonne.ufr27.miage.repository.PassageSegmentRepository;
 import fr.panthonsorbonne.ufr27.miage.repository.VoyageDuJourRepository;
 
 /**
@@ -117,6 +118,7 @@ public class Main {
 						
 						bind(VoyageDuJourRepository.class).to(VoyageDuJourRepository.class);
 						bind(VoyageRepository.class).to(VoyageRepository.class);
+						bind(PassageSegmentRepository.class).to(PassageSegmentRepository.class);
 						bind(JaxbJpaMapper.class).to(JaxbJpaMapper.class);
 					    
 						

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import fr.pantheonsorbonne.ufr27.miage.dao.PerturbationDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.VoyageDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PerturbationJPA;
+import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.jaxb.mapping.JaxbJpaMapper;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Perturbation;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.VoyageDuJour;
@@ -23,4 +24,21 @@ public class VoyageRepository {
 		PerturbationJPA perturbationjpa = this.mapper.perturbationJaxbToJPA(perturbation);
 		voyageDao.ajouterPerturbation(perturbationjpa,idVoyage);
 	}
+	
+	public List<VoyageJPA> getVoyages(String trainId, int time) {
+		List<VoyageJPA> voyagesDujour = this.voyageDao.getVoyagesDuJour(trainId,time);
+		return voyagesDujour;	
+	}
+
+	public void changerHeureVoyage(List<VoyageJPA> voyageAChanger, int retard, boolean changeHeureDebut) {
+		voyageDao.changerHeureVoyage(voyageAChanger, retard, changeHeureDebut);
+		
+	}
+
+	public void delete(List<VoyageJPA> voyagesASupprimer) {
+		voyageDao.delete(voyagesASupprimer);
+		
+	}
+	
 }
+

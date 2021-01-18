@@ -1,45 +1,66 @@
 package fr.pantheonsorbonne.ufr27.miage.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
+import fr.pantheonsorbonne.ufr27.miage.jpa.PassageSegment;
+import fr.pantheonsorbonne.ufr27.miage.jpa.SegmentJPA;
+import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
+import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPAAvecRes;
+import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPASansRes;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Passage;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Perturbation;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Voyage;
 import fr.pantheonsorbonne.ufr27.miage.service.GestionPerturbationService;
+import fr.pantheonsorbonne.ufr27.miage.service.RetarderVoyageService;
+import fr.panthonsorbonne.ufr27.miage.repository.VoyageDuJourRepository;
+import fr.panthonsorbonne.ufr27.miage.repository.VoyageRepository;
 
 public class GestionPerturbationServiceImpl implements GestionPerturbationService{
 
-	@Override
-	public void gererPerturbation(Perturbation perturbation, int idVoyage, int time) {
-		
-		//sil s'agit dun voyage avec Resservation 
-		// je vérifie que le nombre de réservation > 50
-		// si c'est le cas 
-		//je ramène le voyage TER associé au TGV 
-		//je cherche la gare commune en utilisant les list gare 
-		//au niveau du voyage associé je cherche le passage ou stationB = la gare en question 
-		//si passage.getHeuredepart < heureArrivee du TGV à cette gare + retard+ 10 
-		//  le voyage du ter , on modifie lheure de départ + retard et on modifie tt les heures 
-		// de passage ainsi que les voyages suivants du train
+	@Inject
+	VoyageRepository voyageRepo;
 	
+	@Inject
+	RetarderVoyageService retarderVoyageService;
+	
+	@Override
+	public void gererPerturbation(Voyage voyage, int idVoyage, int time) {
+		List<VoyageJPA> voyagesDuTrain = voyageRepo.getVoyages(voyage.getTrain().getIdTrain(), time);
+		Perturbation perturbation = voyage.getTrain().getPerturbation();
+		int retard = perturbation.getDuree();
 		
-		// je ramène tout les voyages
-		//les les ordonnes
-		// je cherche l'indicevoyage en cours
+		//Gerer le cas ou le train en retrad est un TGV => on retarde le voyage du ter lie à au voyage du TGV
+		if(voyage.getTrain().getType() == "TGV" ){
+			VoyageJPAAvecRes voyageAvecRes = (VoyageJPAAvecRes) voyagesDuTrain.get(0);
+			if(voyageAvecRes.getReservations().size() > 50) {
+				List<VoyageJPASansRes> voyagesAssociee = voyageAvecRes.getTerLie();
+				for (VoyageJPASansRes vo :voyagesAssociee ) {
+					List<Gare> gareList = new ArrayList<Gare>();
+					gareList.addAll(vo.getGaresAdesservir());
+					gareList.retainAll(voyageAvecRes.getGaresAdesservir());
+					PassageSegment passageTer = getPassageOfGare(gareList.get(0),vo.getPassageSegments(),vo.getDirection());
+					Passage passageTGV = voyage.getPassages().get(0);
+					int heureEstimeDemarrageTer = passageTGV.getHeureArriveeModifie()+retard+10;
+					if(passageTer.getHeuredepartModifie()< heureEstimeDemarrageTer){
+						List<VoyageJPA> voyagesDuTrainTER = voyageRepo.getVoyages(vo.getTrain().getId(), passageTer.getHeuredepartModifie());
+						retarderVoyageService.RetarderVoyagesTrain(voyagesDuTrainTER,passageTer,retard,true);
+					}
+				}
+			}
+		} 
 		
-		//Pour le voyages en question , je ramènes les passages
-		// organiser les passages
-		//boucler sur les passages et trouver l'indice de celui ou  heuredebut<time<heurefin
-		//pour le passage(indice) mettre heurearrive+perturbation.getduree
-		//for(i=indice+1, i<nombre de passage, i++) on rajoute pour chaque heuredepart et heurearrivee + perturbation.getduree 
-		//update BDD
-		
-		//for(i= indiceVoyage, i < nombre voyage , i++)
-		// si voyage nest pas déja supprimé et voyage précédent. get heure d'arrivée-heure de départ du voyage actuel < 10 
-		// je garde le voyage je modifie tt les heures du voygae et passage + (voyage précédent. get heure d'arrivée-heure de départ du voyage actuel)+5
-		//deuxième boucle pour modifier les voyage
-		// break;
-		
-		//si voyage nest pas déja supprimé et voyage précédent. get heure d'arrivée-heure de départ du voyage suivant > 10
-		// je supprime le voygage, mettre le statut à "supprime" et celui d'après 
-		
-		
+		//Gerer le retard du train ter ou tgv
+		PassageSegment passageActuel = null;
+		for(PassageSegment p :voyagesDuTrain.get(0).getPassageSegments()) {
+			 if(p.getId() == voyage.getPassages().get(0).getIdPassage())
+				 passageActuel = p;
+		}
+		retarderVoyageService.RetarderVoyagesTrain(voyagesDuTrain,passageActuel,retard, false);
+	   
 	
 		// si retard >= 120 
 		//cherche le passage actuel 
@@ -60,5 +81,17 @@ public class GestionPerturbationServiceImpl implements GestionPerturbationServic
 		
 		
 	}
+		
+		private PassageSegment getPassageOfGare(Gare gare, List<PassageSegment> passages,String direction) {
+			for (PassageSegment passage:passages ) {
+				int numSegments = passage.getSegments().size();
+				if((direction == "retour" && passage.getSegments().get(numSegments-1).getStationArrivee() == gare.getNom())||
+						direction == "aller" && passage.getSegments().get(0).getStationDepart() == gare.getNom()) {
+						return passage;
+					}
+				}
+			return null;
+		}
+		
 
 }

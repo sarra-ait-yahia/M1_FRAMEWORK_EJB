@@ -180,7 +180,7 @@ public class TrainClient implements Runnable {
 	
 	
 	public void calculeDistanceParcouru(int time) {
-		this.distanceparcouru = this.vitesseActuel * time;
+		this.distanceparcouru = this.vitesseActuel * (time/60);
 		
 	}
 	
@@ -207,6 +207,9 @@ public class TrainClient implements Runnable {
 		this.tableauDeBord.setRetard(this.retard);
 		voyageAenvoye.getTrain().setTableauDeBord(this.tableauDeBord);
 		voyageAenvoye.getTrain().setPerturbation(this.perturbationActuel);
+		List<Passage> passages = new ArrayList<Passage>();
+		passages.add(this.passageActuel);
+		voyageAenvoye.setPassages(passages);
 		rest.postInfoVoyage(voyageAenvoye);
 	}
 	
