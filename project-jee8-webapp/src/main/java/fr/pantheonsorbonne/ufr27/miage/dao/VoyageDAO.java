@@ -20,11 +20,14 @@ public class VoyageDAO {
 	
 	
 	public List<VoyageJPA> getVoyagesDuJour(String idTrain, int time){
+		em.getTransaction().begin();
 		Query query = em.createQuery("SELECT v FROM VoyageJPA v WHERE v.train.id =:idTrain AND v.dateVoyage =:dateToday AND v.heureDepartModifie >=:time OR (v.heureDepartModifie <:time AND v.heureArriveeModifie >:time) ORDER BY v.heureDepartModifie ", VoyageJPA.class);
 		query.setParameter("idTrain", idTrain);
 		query.setParameter("dateToday", LocalDate.of(2021, 01, 23));
 		query.setParameter("time", time);
-		return query.getResultList();
+		List<VoyageJPA> listVoyage= query.getResultList();
+		em.getTransaction().commit();
+		return listVoyage;
 	}
 
 	public void ajouterPerturbation(PerturbationJPA perturbation, int idVoyage){
@@ -64,6 +67,33 @@ public class VoyageDAO {
 			v.setStatut("supprimé");
 		}
 		em.getTransaction().commit();
+		
+	}
+
+	public List<VoyageJPA> getVoyageDumemeTrajetEtDirection(String idTrajet, String direction, int time, int idVoyage) {
+		em.getTransaction().begin();
+		Query query = em.createQuery("SELECT v FROM VoyageJPA v WHERE v.id !=:idVoyage AND v.trajet.id =:idTrajet AND v.direction =:direction AND v.dateVoyage =:dateToday AND v.statut !=:statut AND v.heureArriveeModifie <:time ORDER BY v.heureDepartModifie ", VoyageJPA.class);
+		query.setParameter("idVoyage", idVoyage);
+		query.setParameter("idTrajet", idTrajet);
+		query.setParameter("direction", direction);
+		query.setParameter("statut", "supprimé");
+		query.setParameter("dateToday", LocalDate.of(2021, 01, 23));
+		query.setParameter("time", time);
+		List<VoyageJPA> listVoyage= query.getResultList();
+		em.getTransaction().commit();
+		return listVoyage;
+	}
+
+	public List<VoyageJPA> getVoyagesSuivants(int heureDepartModifie, String idTrain) {
+		em.getTransaction().begin();
+		Query query = em.createQuery("SELECT v FROM VoyageJPA v WHERE v.train.id =:idTrain AND v.dateVoyage =:dateToday AND v.statut !=:statut  AND v.heureDepartModifie >=:time ORDER BY v.heureDepartModifie ", VoyageJPA.class);
+		query.setParameter("idVoyage", idTrain);
+		query.setParameter("statut", "supprimé");
+		query.setParameter("dateToday", LocalDate.of(2021, 01, 23));
+		query.setParameter("time", heureDepartModifie);
+		List<VoyageJPA> listVoyage= query.getResultList();
+		em.getTransaction().commit();
+		return listVoyage;
 		
 	}
 }

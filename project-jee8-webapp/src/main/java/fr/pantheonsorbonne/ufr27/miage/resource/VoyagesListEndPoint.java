@@ -12,11 +12,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.FreeTrialPlan;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Voyage;
 import fr.pantheonsorbonne.ufr27.miage.service.GestionPerturbationService;
-import fr.pantheonsorbonne.ufr27.miage.service.GymService;
 import fr.pantheonsorbonne.ufr27.miage.service.InformationVoyageService;
 import fr.pantheonsorbonne.ufr27.miage.service.NotifyInfoGareService;
 

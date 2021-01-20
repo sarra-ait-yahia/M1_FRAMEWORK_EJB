@@ -7,9 +7,12 @@ import javax.inject.Inject;
 import fr.pantheonsorbonne.ufr27.miage.dao.PerturbationDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.VoyageDAO;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PerturbationJPA;
+import fr.pantheonsorbonne.ufr27.miage.jpa.TrajetJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.jaxb.mapping.JaxbJpaMapper;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Perturbation;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Train;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Trajet;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.VoyageDuJour;
 
 public class VoyageRepository {
@@ -37,6 +40,17 @@ public class VoyageRepository {
 
 	public void delete(List<VoyageJPA> voyagesASupprimer) {
 		voyageDao.delete(voyagesASupprimer);
+		
+	}
+
+	public List<VoyageJPA> getVoyagesdumemeTrajetEtDirection(Trajet trajet, String direction, int time, int idVoyage) {
+		return voyageDao.getVoyageDumemeTrajetEtDirection(trajet.getIdTrajet(), direction, time,idVoyage);
+		
+	}
+	
+	public List<VoyageJPA> getVoyagesSuivants(VoyageJPA voyage){
+		voyageDao.getVoyagesSuivants(voyage.getHeureDepartModifie(),voyage.getTrain().getId());
+		return null;
 		
 	}
 	

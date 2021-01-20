@@ -23,13 +23,11 @@ import javax.persistence.EntityManager;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoDebtException;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.IncidentImpact;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PassageSegment;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Payment;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PerturbationJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Quai;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
@@ -41,7 +39,6 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPAAvecRes;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPASansRes;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
 import fr.pantheonsorbonne.ufr27.miage.service.DataService;
-import fr.pantheonsorbonne.ufr27.miage.service.PaymentService;
 
 @ApplicationScoped
 @ManagedBean
@@ -93,45 +90,45 @@ public class DataServiceImpl implements DataService {
 			listData.add(train4);
 			
 			//createPassageSegment
-			PassageSegment passage1 = new PassageSegment(5,5, 20,20, false, new ArrayList() {{ add(segment1);}});
+			PassageSegment passage1 = new PassageSegment(5,5, 20,20, false, new ArrayList() {{ add(segment1);}},25);
 			listData.add(passage1);
-			PassageSegment passage2 = new PassageSegment(23,23, 41,41, false, new ArrayList() {{ add(segment2);}});
+			PassageSegment passage2 = new PassageSegment(23,23, 41,41, false, new ArrayList() {{ add(segment2);}},55);
 			listData.add(passage2);
-			PassageSegment passage3 = new PassageSegment(44,44, 56,56, false, new ArrayList() {{ add(segment3);}});
+			PassageSegment passage3 = new PassageSegment(44,44, 56,56, false, new ArrayList() {{ add(segment3);}},75);
 			listData.add(passage3);
-			PassageSegment passage4 = new PassageSegment(70,70,100, 100, false, new ArrayList() {{ add(segment3); add(segment2);}});
+			PassageSegment passage4 = new PassageSegment(70,70,100, 100, false, new ArrayList() {{ add(segment3); add(segment2);}},50);
 			listData.add(passage4);
-			PassageSegment passage5 = new PassageSegment(103,103,118, 118, false, new ArrayList() {{ add(segment1);}});
+			PassageSegment passage5 = new PassageSegment(103,103,118, 118, false, new ArrayList() {{ add(segment1);}},75);
 			listData.add(passage5);
-			PassageSegment passage6 = new PassageSegment(130,130,145, 145, false, new ArrayList() {{ add(segment1);}});
+			PassageSegment passage6 = new PassageSegment(130,130,145, 145, false, new ArrayList() {{ add(segment1);}},25);
 			listData.add(passage6);
-			PassageSegment passage7 = new PassageSegment(148,148,166, 166, false, new ArrayList() {{ add(segment2);}});
+			PassageSegment passage7 = new PassageSegment(148,148,166, 166, false, new ArrayList() {{ add(segment2);}},55);
 			listData.add(passage7);
-			PassageSegment passage8 = new PassageSegment(169,169,181, 181, false, new ArrayList() {{ add(segment3);}});
+			PassageSegment passage8 = new PassageSegment(169,169,181, 181, false, new ArrayList() {{ add(segment3);}},75);
 			listData.add(passage8);
-			PassageSegment passage9 = new PassageSegment(200,200,215,215, false, new ArrayList() {{ add(segment3);}});
+			PassageSegment passage9 = new PassageSegment(200,200,215,215, false, new ArrayList() {{ add(segment3);}},20);
 			listData.add(passage9);
-			PassageSegment passage10 = new PassageSegment(218,218,236, 236, false, new ArrayList() {{add(segment2);}});
+			PassageSegment passage10 = new PassageSegment(218,218,236, 236, false, new ArrayList() {{add(segment2);}},50);
 			listData.add(passage10);
-			PassageSegment passage11 = new PassageSegment(239,239,251, 251, false, new ArrayList() {{ add(segment1);}});
+			PassageSegment passage11 = new PassageSegment(239,239,251, 251, false, new ArrayList() {{ add(segment1);}},75);
 			listData.add(passage11);
-			PassageSegment passage12 = new PassageSegment(40,40,55, 55, false, new ArrayList() {{ add(segment1);}});
+			PassageSegment passage12 = new PassageSegment(40,40,55, 55, false, new ArrayList() {{ add(segment1);}},25);
 			listData.add(passage12);
-			PassageSegment passage13 = new PassageSegment(58,58,88, 88, false, new ArrayList() {{ add(segment2);add(segment3);}});
+			PassageSegment passage13 = new PassageSegment(58,58,88, 88, false, new ArrayList() {{ add(segment2);add(segment3);}},75);
 			listData.add(passage13);
-			PassageSegment passage14 = new PassageSegment(100,100,112, 112, false, new ArrayList() {{ add(segment3);}});
+			PassageSegment passage14 = new PassageSegment(100,100,112, 112, false, new ArrayList() {{ add(segment3);}},20);
 			listData.add(passage14);
-			PassageSegment passage15 = new PassageSegment(115,115,133, 133, false, new ArrayList() {{add(segment2);}});
+			PassageSegment passage15 = new PassageSegment(115,115,133, 133, false, new ArrayList() {{add(segment2);}},50);
 			listData.add(passage15);
-			PassageSegment passage16 = new PassageSegment(136,136,151, 151, false, new ArrayList() {{ add(segment1);}});
+			PassageSegment passage16 = new PassageSegment(136,136,151, 151, false, new ArrayList() {{ add(segment1);}},75);
 			listData.add(passage16);
-			PassageSegment passage17 = new PassageSegment(2,2,20, 20, false, new ArrayList() {{add(segment4);}});
+			PassageSegment passage17 = new PassageSegment(2,2,20, 20, false, new ArrayList() {{add(segment4);}},60);
 			listData.add(passage17);
-			PassageSegment passage18 = new PassageSegment(30,30,45, 45, false, new ArrayList() {{ add(segment5);}});
+			PassageSegment passage18 = new PassageSegment(30,30,45, 45, false, new ArrayList() {{ add(segment5);}},110);
 			listData.add(passage18);
-			PassageSegment passage19 = new PassageSegment(100,100,160, 160, false, new ArrayList() {{add(segment6);}});
+			PassageSegment passage19 = new PassageSegment(100,100,160, 160, false, new ArrayList() {{add(segment6);}},200);
 			listData.add(passage19);
-			PassageSegment passage20 = new PassageSegment(170,170,200, 200, false, new ArrayList() {{ add(segment7);}});
+			PassageSegment passage20 = new PassageSegment(170,170,200, 200, false, new ArrayList() {{ add(segment7);}},300);
 			listData.add(passage20);
 			
 			//create Gares

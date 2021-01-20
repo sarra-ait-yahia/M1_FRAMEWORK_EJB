@@ -25,6 +25,17 @@ public class PassageSegment {
 	
 	int heureArriveeModifie;
 	
+	double distanceParcourue;
+	
+	
+	public double getDistanceParcourue() {
+		return distanceParcourue;
+	}
+
+	public void setDistanceParcourue(double distanceParcourue) {
+		this.distanceParcourue = distanceParcourue;
+	}
+
 	public int getHeuredepartModifie() {
 		return heuredepartModifie;
 	}
@@ -54,7 +65,7 @@ public class PassageSegment {
 	public PassageSegment() {
 	}
 
-	public PassageSegment(int heureDepart,int heuredepartModifie , int heureArrivee, int heureArriveeModifie,boolean isPassageAjoute, List<SegmentJPA> segments) {
+	public PassageSegment(int heureDepart,int heuredepartModifie , int heureArrivee, int heureArriveeModifie,boolean isPassageAjoute, List<SegmentJPA> segments, double distanceParcourue) {
 		super();
 		this.heureDepart = heureDepart;
 		this.heuredepartModifie = heuredepartModifie;
@@ -62,6 +73,7 @@ public class PassageSegment {
 		this.heureArriveeModifie = heureArriveeModifie;
 		this.isPassageAjoute = isPassageAjoute;
 		this.segments = segments;
+		this.distanceParcourue = distanceParcourue;
 	}
 
 	public boolean isPassageAjoute() {

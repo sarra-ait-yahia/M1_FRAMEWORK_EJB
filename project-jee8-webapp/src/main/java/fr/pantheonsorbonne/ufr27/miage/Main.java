@@ -19,14 +19,12 @@ import org.glassfish.jersey.process.internal.RequestScoped;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import fr.pantheonsorbonne.ufr27.miage.conf.DataSet;
+
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
-import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PassageSegmentDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PassagerDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PerturbationDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.ReservationDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.SegmentDAO;
@@ -34,12 +32,8 @@ import fr.pantheonsorbonne.ufr27.miage.dao.TrainDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.VoyageDAO;
 import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
 import fr.pantheonsorbonne.ufr27.miage.jms.AccesJMS;
-import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
-import fr.pantheonsorbonne.ufr27.miage.jms.VoyageInformationBean;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentAckQueueSupplier;
-import fr.pantheonsorbonne.ufr27.miage.jms.conf.PaymentQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.VoyageAckQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.VoyageQueueSupplier;
 import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
@@ -47,25 +41,15 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.jaxb.mapping.JaxbJpaMapper;
 import fr.pantheonsorbonne.ufr27.miage.service.AjoutSuppressionVoyageService;
 import fr.pantheonsorbonne.ufr27.miage.service.DataService;
 import fr.pantheonsorbonne.ufr27.miage.service.GestionPerturbationService;
-import fr.pantheonsorbonne.ufr27.miage.service.GymService;
 import fr.pantheonsorbonne.ufr27.miage.service.InformationVoyageService;
-import fr.pantheonsorbonne.ufr27.miage.service.InvoicingService;
-import fr.pantheonsorbonne.ufr27.miage.service.MailingService;
 import fr.pantheonsorbonne.ufr27.miage.service.NotifyInfoGareService;
-import fr.pantheonsorbonne.ufr27.miage.service.PaymentService;
 import fr.pantheonsorbonne.ufr27.miage.service.RetarderVoyageService;
-import fr.pantheonsorbonne.ufr27.miage.service.UserService;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.AjoutSuppressionVoyageServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.DataServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.GestionPerturbationServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.service.impl.GymServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.InformationVoyageServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.service.impl.InvoicingServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.service.impl.MailingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.NotifyInfoGareServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.service.impl.PaymentServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.RetarderVoyageServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.service.impl.UserServiceImpl;
 import fr.panthonsorbonne.ufr27.miage.repository.VoyageRepository;
 import fr.panthonsorbonne.ufr27.miage.repository.PassageSegmentRepository;
 import fr.panthonsorbonne.ufr27.miage.repository.VoyageDuJourRepository;
@@ -91,12 +75,6 @@ public class Main {
 					@Override
 					protected void configure() {
 
-						bind(GymServiceImpl.class).to(GymService.class);
-
-						bind(PaymentServiceImpl.class).to(PaymentService.class);
-						bind(InvoicingServiceImpl.class).to(InvoicingService.class);
-						bind(UserServiceImpl.class).to(UserService.class);
-						bind(MailingServiceImpl.class).to(MailingService.class);
 						bind(InformationVoyageServiceImpl.class).to(InformationVoyageService.class);
 						bind(DataServiceImpl.class).to(DataService.class);
 						bind(GestionPerturbationServiceImpl.class).to(GestionPerturbationService.class);
@@ -106,8 +84,6 @@ public class Main {
 						
 								
 						
-						bind(PaymentDAO.class).to(PaymentDAO.class);
-					    bind(InvoiceDAO.class).to(InvoiceDAO.class);
 						bind(PassagerDAO.class).to(PassagerDAO.class);
 						bind(PassageSegmentDAO.class).to(PassageSegmentDAO.class);
 						bind(PerturbationDAO.class).to(PerturbationDAO.class);
@@ -125,21 +101,13 @@ public class Main {
 						bindFactory(EMFFactory.class).to(EntityManagerFactory.class).in(Singleton.class);
 						bindFactory(EMFactory.class).to(EntityManager.class).in(RequestScoped.class);
 						bindFactory(ConnectionFactorySupplier.class).to(ConnectionFactory.class).in(Singleton.class);
-						bindFactory(PaymentAckQueueSupplier.class).to(Queue.class).named("PaymentAckQueue")
-								.in(Singleton.class);
-						bindFactory(PaymentQueueSupplier.class).to(Queue.class).named("PaymentQueue")
-								.in(Singleton.class);
-
-						bind(PaymentValidationAckownledgerBean.class).to(PaymentValidationAckownledgerBean.class)
-								.in(Singleton.class);
+						
 
 						bindFactory(VoyageAckQueueSupplier.class).to(Queue.class).named("VoyageAckQueue")
 						.in(Singleton.class);
 				        bindFactory(VoyageQueueSupplier.class).to(Queue.class).named("VoyageQueue")
 						.in(Singleton.class);
 
-				        bind(VoyageInformationBean.class).to(VoyageInformationBean.class).in(Singleton.class);
-				        
 				        bind(AccesJMS.class).to(AccesJMS.class).in(Singleton.class);
 				        
 					}

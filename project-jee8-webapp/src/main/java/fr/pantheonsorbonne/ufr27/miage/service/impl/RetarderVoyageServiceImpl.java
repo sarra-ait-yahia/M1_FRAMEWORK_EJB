@@ -31,16 +31,18 @@ public class RetarderVoyageServiceImpl implements RetarderVoyageService {
 		
 		List<PassageSegment> passageAChangerUn = new ArrayList<PassageSegment>();
 		List<VoyageJPA> voyageAChanger = new ArrayList<VoyageJPA>();
-		int i=0;
-	    for(PassageSegment p: voyageActuel.getPassageSegments()) {
-	    	if(p.getId() == passage.getId()) {
-	    		for(int j = i; j< voyageActuel.getPassageSegments().size(); j++ ){
-	    			passageAChangerUn.add(p);
-	    		}
-	    		break;
-	    	}
-	    	i++;
-	    }
+		if(passage != null) {
+			int i=0;
+		    for(PassageSegment p: voyageActuel.getPassageSegments()) {
+		    	if(p.getId() == passage.getId()) {
+		    		for(int j = i; j< voyageActuel.getPassageSegments().size(); j++ ){
+		    			passageAChangerUn.add(p);
+		    		}
+		    		break;
+		    	}
+		    	i++;
+		    }
+		}
 	    
 	    passageRepo.changerHeurePassage(passageAChangerUn,retard,changeHeureDebut);
 	    
@@ -78,6 +80,12 @@ public class RetarderVoyageServiceImpl implements RetarderVoyageService {
 	    passageRepo.changerHeurePassage(passageAChangerDeux,retard,true);
 	 
 	    voyageRepo.changerHeureVoyage(voyageAChanger,retard,changeHeureDebut);
+	}
+
+	@Override
+	public void retarderPassage(List<PassageSegment> listPassageAmodifier) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

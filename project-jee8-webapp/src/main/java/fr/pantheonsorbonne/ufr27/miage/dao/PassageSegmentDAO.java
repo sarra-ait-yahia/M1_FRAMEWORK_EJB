@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import fr.pantheonsorbonne.ufr27.miage.jpa.PassageSegment;
+import fr.pantheonsorbonne.ufr27.miage.jpa.SegmentJPA;
 
 @ManagedBean
 public class PassageSegmentDAO {
@@ -27,6 +28,16 @@ public class PassageSegmentDAO {
 			}
 			i++;
 		}
+		em.getTransaction().commit();
+		
+	}
+
+	public void modifyPassage(PassageSegment p, List<SegmentJPA> listSegment) {
+		em.getTransaction().begin();
+		PassageSegment passage = em.find(PassageSegment.class, p.getId());
+		passage.setSegments(listSegment);
+		passage.setDistanceParcourue(//passagePrécédent);
+		passage.setHeureArrivee(//calculheureArrivee);
 		em.getTransaction().commit();
 		
 	}

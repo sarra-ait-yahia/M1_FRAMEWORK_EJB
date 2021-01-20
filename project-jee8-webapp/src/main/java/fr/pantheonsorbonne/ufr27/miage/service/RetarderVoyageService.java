@@ -11,6 +11,8 @@ public interface RetarderVoyageService {
 
 	void RetarderVoyagesTrain(List<VoyageJPA> voyagesDuTrain, PassageSegment passage, int retard,boolean changeHeureDebut);
 
+	void retarderPassage(List<PassageSegment> listPassageAmodifier);
+
 	
 
 }

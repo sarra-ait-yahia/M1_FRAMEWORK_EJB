@@ -12,8 +12,6 @@ import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.persistence.EntityManager;
-
-import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.jms.AccesJMS;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Voyage;
 import fr.pantheonsorbonne.ufr27.miage.service.GestionPerturbationService;
@@ -40,8 +38,6 @@ public class NotifyInfoGareServiceImpl implements NotifyInfoGareService {
 		// TODO Auto-generated method stub
 		
 	}
-	
-
 	
 
 }
