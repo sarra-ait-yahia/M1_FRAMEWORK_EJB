@@ -6,8 +6,10 @@ import java.util.List;
 
 import javax.annotation.ManagedBean;
 
+import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PassageSegment;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PerturbationJPA;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Quai;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -95,5 +97,19 @@ public class VoyageDAO {
 		em.getTransaction().commit();
 		return listVoyage;
 		
+	}
+
+	public void addGareToVoyage(VoyageJPA voyageJpa, Gare gare) {
+		em.getTransaction().begin();
+		Gare newGare = em.find(Gare.class, gare.getNom());
+		List<Gare> gares = voyageJpa.getGaresAdesservir();
+		gares.add(newGare);
+		Quai newQuai = em.find(Quai.class, gare.getNom()+"5");
+		List<Quai> quais = voyageJpa.getQuaiAdesservir();
+		quais.add(newQuai);
+		VoyageJPA v = em.find(VoyageJPA.class, voyageJpa.getId());
+		v.setGaresAdesservir(gares);
+		v.setQuaiAdesservir(quais);
+		em.getTransaction().commit();	
 	}
 }

@@ -24,11 +24,7 @@ import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
 import fr.pantheonsorbonne.ufr27.miage.dao.PassageSegmentDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.PassagerDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.PerturbationDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.ReservationDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.SegmentDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.TrainDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.IncidentImpactDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.VoyageDAO;
 import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
 import fr.pantheonsorbonne.ufr27.miage.jms.AccesJMS;
@@ -51,6 +47,7 @@ import fr.pantheonsorbonne.ufr27.miage.service.impl.InformationVoyageServiceImpl
 import fr.pantheonsorbonne.ufr27.miage.service.impl.NotifyInfoGareServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.service.impl.RetarderVoyageServiceImpl;
 import fr.panthonsorbonne.ufr27.miage.repository.VoyageRepository;
+import fr.panthonsorbonne.ufr27.miage.repository.IncidentRepository;
 import fr.panthonsorbonne.ufr27.miage.repository.PassageSegmentRepository;
 import fr.panthonsorbonne.ufr27.miage.repository.VoyageDuJourRepository;
 
@@ -84,17 +81,14 @@ public class Main {
 						
 								
 						
-						bind(PassagerDAO.class).to(PassagerDAO.class);
+						bind(IncidentImpactDAO.class).to(IncidentImpactDAO.class);
 						bind(PassageSegmentDAO.class).to(PassageSegmentDAO.class);
-						bind(PerturbationDAO.class).to(PerturbationDAO.class);
-						bind(ReservationDAO.class).to(ReservationDAO.class);
-						bind(TrainDAO.class).to(TrainDAO.class);
 						bind(VoyageDAO.class).to(VoyageDAO.class);
-						bind(SegmentDAO.class).to(SegmentDAO.class);
 						
 						bind(VoyageDuJourRepository.class).to(VoyageDuJourRepository.class);
 						bind(VoyageRepository.class).to(VoyageRepository.class);
 						bind(PassageSegmentRepository.class).to(PassageSegmentRepository.class);
+						bind(IncidentRepository.class).to(IncidentRepository.class);
 						bind(JaxbJpaMapper.class).to(JaxbJpaMapper.class);
 					    
 						
@@ -107,8 +101,7 @@ public class Main {
 						.in(Singleton.class);
 				        bindFactory(VoyageQueueSupplier.class).to(Queue.class).named("VoyageQueue")
 						.in(Singleton.class);
-
-				        bind(AccesJMS.class).to(AccesJMS.class).in(Singleton.class);
+                        bind(AccesJMS.class).to(AccesJMS.class).in(Singleton.class);
 				        
 					}
 

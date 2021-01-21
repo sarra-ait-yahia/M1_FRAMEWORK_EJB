@@ -77,4 +77,11 @@ public class Gare implements Runnable{
 		}
 	}
 
+	public void afficherMessagePerturbation(String IdTrain, String trajet,int time, String typePerturbation, String impactPerturbation,
+			String RetardArret) {
+		System.out.println("Affichage Perturbation: \n Le train : "+IdTrain+" qui roule sur le trajet "+trajet+" a eu une perturbation de type: "+typePerturbation+
+				" qui a causé un "+impactPerturbation+" de "+RetardArret+"à "+time+" minutes.");
+		
+	}
+
 }

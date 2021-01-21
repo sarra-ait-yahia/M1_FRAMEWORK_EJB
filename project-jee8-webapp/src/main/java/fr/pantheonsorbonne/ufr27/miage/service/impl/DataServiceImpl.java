@@ -23,8 +23,6 @@ import javax.persistence.EntityManager;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import fr.pantheonsorbonne.ufr27.miage.exception.NoDebtException;
-import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.IncidentImpact;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PassageSegment;
@@ -37,7 +35,6 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.TrajetJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPAAvecRes;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPASansRes;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
 import fr.pantheonsorbonne.ufr27.miage.service.DataService;
 
 @ApplicationScoped
@@ -155,30 +152,46 @@ public class DataServiceImpl implements DataService {
 			listData.add(quaiA1);
 			Quai quaiA2 = new Quai("A2");
 			listData.add(quaiA2);
+			Quai quaiA5 = new Quai("A5");
+			listData.add(quaiA5);
 			Quai quaiB1 = new Quai("B1");
 			listData.add(quaiB1);
 			Quai quaiB2 = new Quai("B2");
 			listData.add(quaiB2);
 			Quai quaiB3 = new Quai("B3");
 			listData.add(quaiB3);
+			Quai quaiB5 = new Quai("B5");
+			listData.add(quaiB5);
 			Quai quaiC2 = new Quai("C2");
 			listData.add(quaiC2);
 			Quai quaiC3 = new Quai("C3");
 			listData.add(quaiC3);
+			Quai quaiC5 = new Quai("C5");
+			listData.add(quaiC5);
 			Quai quaiD1 = new Quai("D1");
 			listData.add(quaiD1);
 			Quai quaiD3 = new Quai("D3");
 			listData.add(quaiD3);
 			Quai quaiD4 = new Quai("D4");
 			listData.add(quaiD4);
+			Quai quaiD5 = new Quai("D5");
+			listData.add(quaiD5);
 			Quai quaiE1 = new Quai("E1");
 			listData.add(quaiE1);
+			Quai quaiE5 = new Quai("E5");
+			listData.add(quaiE5);
 			Quai quaiF2 = new Quai("F2");
 			listData.add(quaiF2);
+			Quai quaiF5 = new Quai("F5");
+			listData.add(quaiF5);
 			Quai quaiG1 = new Quai("G1");
 			listData.add(quaiG1);
+			Quai quaiG5 = new Quai("G5");
+			listData.add(quaiG5);
 			Quai quaiH2 = new Quai("H2");
 			listData.add(quaiH2);
+			Quai quaiH5 = new Quai("H5");
+			listData.add(quaiH5);
 			
 			//createVoyage
 			LocalDate date = LocalDate.of(2021, 01, 23);

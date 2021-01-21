@@ -84,8 +84,7 @@ public class RetarderVoyageServiceImpl implements RetarderVoyageService {
 
 	@Override
 	public void retarderPassage(List<PassageSegment> listPassageAmodifier) {
-		// TODO Auto-generated method stub
-		
+		passageRepo.changerHeurePassage(listPassageAmodifier,3,true);
 	}
 
 	

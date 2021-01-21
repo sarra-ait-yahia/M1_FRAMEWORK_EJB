@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import fr.pantheonsorbonne.ufr27.miage.dao.PerturbationDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.VoyageDAO;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PerturbationJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.TrajetJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
@@ -51,6 +51,11 @@ public class VoyageRepository {
 	public List<VoyageJPA> getVoyagesSuivants(VoyageJPA voyage){
 		voyageDao.getVoyagesSuivants(voyage.getHeureDepartModifie(),voyage.getTrain().getId());
 		return null;
+		
+	}
+
+	public void addGareToVoyage(VoyageJPA voyageJpa, Gare gare) {
+		voyageDao.addGareToVoyage(voyageJpa, gare);
 		
 	}
 	

@@ -19,13 +19,13 @@ public class PassageSegmentRepository {
 		
 	}
 
-	public void modifyPassage(PassageSegment p, List<SegmentJPA> listSegment) {
-		passageDao.modifyPassage(PassageSegment p, List<SegmentJPA> listSegment);
+	public void modifyPassage(PassageSegment p, List<SegmentJPA> listSegment, double distanceModifie, int heureArrivee) {
+		passageDao.modifyPassage(p, listSegment,distanceModifie,heureArrivee);
 		
 	}
 
-	public void createPassage(List<SegmentJPA> listSegmentNewPassge, VoyageJPA voyageJpa, PassageSegment p) {
-		// TODO Auto-generated method stub
+	public void createPassage(List<SegmentJPA> listSegmentNewPassge, VoyageJPA voyageJpa, double distanceTotalNewPassage, int heureArriveeModifie, int heureArriveeNewPassage) {
+		passageDao.createPassage(listSegmentNewPassge,voyageJpa,distanceTotalNewPassage,heureArriveeModifie,heureArriveeNewPassage);
 		
 	}
 

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 @Entity
@@ -42,6 +43,7 @@ public class VoyageJPA {
 	TrainJPA train;
 	
 	@OneToMany
+	@OrderBy(value="heuredepartModifie")
 	List<PassageSegment> passageSegments;
 	
 	

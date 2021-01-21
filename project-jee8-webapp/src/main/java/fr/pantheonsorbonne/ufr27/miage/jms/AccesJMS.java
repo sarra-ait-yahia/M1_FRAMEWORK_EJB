@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.jms;
 
 import java.io.StringWriter;
+import java.util.Map;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
@@ -24,7 +25,6 @@ import javax.xml.namespace.QName;
 
 import fr.pantheonsorbonne.ufr27.miage.exception.NoDebtException;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Gare;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Voyage;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.VoyageDuJour;
@@ -65,7 +65,7 @@ public class AccesJMS {
 	}
 
 	
-	public void sendVoyage(Voyage voyage, int time) {
+	public void sendVoyage(Voyage voyage, int time, Map<String, String> infoPerturbation) {
 		try {
 
 			TextMessage message = session.createTextMessage();
@@ -88,6 +88,12 @@ public class AccesJMS {
 			for(Gare g : voyage.getGares()) {
 				gareDesservi+= g.getNom();
 				}
+			if( infoPerturbation!=null ) {
+				message.setStringProperty("IdVoyage", infoPerturbation.get("idVoyage"));
+				message.setStringProperty("typePerturbation", infoPerturbation.get("typePerturbation"));
+				message.setStringProperty("impactPerturbation", infoPerturbation.get("impactPerturbation"));
+				message.setStringProperty("RetardArret", infoPerturbation.get("RetardArret"));
+			}
 			message.setStringProperty("GareDesservi", gareDesservi);
 			message.setIntProperty("time", time);
 			messageProducer.send(message);
