@@ -12,8 +12,14 @@ public class AffichageVoyageArrivee extends AffichageVoyage {
 	
 	@Override
 	public String toString() {
-		return "Ecran Arrivee: \n"+"Train: "+this.idTrain+" ,arrivé de: "+this.arrivee+" , heure prévue d'arrivé: "+this.heurePrevu+" , heure réelle d'arrivé: "+this.heureModifie+" , "+this.statut+" , N°quai: "+this.quai;
-		
+		String message= "";
+		String statut = this.statut == "à faire" ? "":this.statut;
+		if(this.statut =="supprimé") {
+			message = "Ecran Arrivee: \n"+"Train: "+this.idTrain+" ,arrivé de: "+this.arrivee+" , heure d'arrivé: "+this.heureModifie+" , "+statut;
+		}else {
+		 message ="Ecran Arrivee: \n"+"Train: "+this.idTrain+" ,arrivé de: "+this.arrivee+" , heure prévue d'arrivé: "+this.heurePrevu+" , heure réelle d'arrivé: "+this.heureModifie+" , "+statut+" , N°quai: "+this.quai;
+		}
+		return message;
 	}
 
 }

@@ -26,6 +26,7 @@ import javax.xml.bind.JAXBException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.IncidentImpact;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PassageSegment;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Passager;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PerturbationJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Quai;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
@@ -193,6 +194,20 @@ public class DataServiceImpl implements DataService {
 			Quai quaiH5 = new Quai("H5");
 			listData.add(quaiH5);
 			
+			String[] nom ={"Sarra","narjess","fatima","Sara","houda","Thomas","Xavier","Dalia","Jocelyn","François",
+			                "Mathilde","Loic","Salah","Stéphane","Timothée","Katia","Benois","Mehdi","Anes","Hiba","Claude",
+			                "Nelly","Rose","Mouna","Françoise","Jugurtha","Noé","Clément","Sofiane","Sihem","Ines","Malik","Samy",
+			                "Daphné","Madou","Ahcene","Edouard","Pierre","Cloé","Haroun","david","Nina","Jeanne","Robert","Kamel",
+			                "Issam","Moise","Yann","Zohra","Idir","Ilyana"};
+
+			List<Reservation> listReservation = new ArrayList<Reservation>();
+			for (String name:nom ) {
+				Passager p = new Passager(name);
+				listData.add(p);
+				Reservation res = new Reservation(p);
+				listData.add(res);
+				listReservation.add(res);
+			}
 			//createVoyage
 			LocalDate date = LocalDate.of(2021, 01, 23);
 			VoyageJPA voyage1 = new VoyageJPASansRes(date, 5,5,56,56, (double)100, trajet1,"aller",train1, new ArrayList() {{ add(passage1); add(passage2); add(passage3);}} , (double)75, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareA); add(gareB); add(gareC);add(gareD);}},new ArrayList() {{ add(quaiA1); add(quaiB1); add(quaiC2);add(quaiD3);}}) ;
@@ -207,7 +222,7 @@ public class DataServiceImpl implements DataService {
 			listData.add(voyage5);
 			VoyageJPA voyage6 = new VoyageJPASansRes(date, 100,100,151,151, (double)100, trajet1,"retour",train2, new ArrayList() {{ add(passage14); add(passage15); add(passage16);}} , (double)75, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareD); add(gareC); add(gareB);add(gareA);}},new ArrayList() {{ add(quaiD1); add(quaiC3); add(quaiB2);add(quaiA2);}}) ;
 			listData.add(voyage6);
-			VoyageJPA voyage7 = new VoyageJPAAvecRes(date, 2,2,45,45, (double)200, trajet2,"aller",train3, new ArrayList() {{ add(passage17); add(passage18); }} , (double)110, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareE); add(gareF); add(gareB);}}, new ArrayList() {{ add(quaiE1); add(quaiF2); add(quaiB3);}}, new ArrayList<Reservation>(), new ArrayList() {{ add(voyage5);}}) ;
+			VoyageJPA voyage7 = new VoyageJPAAvecRes(date, 2,2,45,45, (double)200, trajet2,"aller",train3, new ArrayList() {{ add(passage17); add(passage18); }} , (double)110, new ArrayList<PerturbationJPA>(), "a faire",new ArrayList() {{ add(gareE); add(gareF); add(gareB);}}, new ArrayList() {{ add(quaiE1); add(quaiF2); add(quaiB3);}},listReservation, new ArrayList() {{ add(voyage5);}}) ;
 			listData.add(voyage7);
 			VoyageJPA voyage8 = new VoyageJPAAvecRes(date, 100,100,200,200, (double)200, trajet3,"aller",train4, new ArrayList() {{ add(passage19); add(passage20);}} , (double)300, new ArrayList<PerturbationJPA>(),"a faire", new ArrayList() {{ add(gareD); add(gareG); add(gareH);}},new ArrayList() {{ add(quaiD4); add(quaiG1); add(quaiH2);}}, new ArrayList<Reservation>(),new ArrayList<VoyageJPASansRes>()) ;
 			listData.add(voyage8);

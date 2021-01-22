@@ -39,4 +39,15 @@ public class Reservation {
 	public void setVoyage(VoyageJPA voyage) {
 		this.voyage = voyage;
 	}
+
+	public Reservation(Passager passager) {
+		super();
+		this.passager = passager;
+	}
+
+	public Reservation() {
+		super();
+	}
+	
+	
 }
