@@ -44,15 +44,15 @@ public class VoyagesListEndPoint {
 	@Inject 
 	NotifyInfoGareService notifyInfoGareService;
 	
-	@GET
+	@Produces(value = { MediaType.APPLICATION_XML })
 	@Path("/{trainId}/{time}")
-	@Produces(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@GET
 	public Response getListVoyage(@PathParam("trainId") String trainId,@PathParam("time") int time ) {
-		try {
+		System.out.println("helllo");
+		if (serviceInfoVoyage.getListVoyage(trainId,time) != null) {
 			return Response.ok(serviceInfoVoyage.getListVoyage(trainId,time)).build();
-		} catch (Exception e) {
-			throw new WebApplicationException(404);
 		}
+		return Response.noContent().build();
 	}
 
 	@Produces(value = { MediaType.APPLICATION_XML})
@@ -65,6 +65,5 @@ public class VoyagesListEndPoint {
 		notifyInfoGareService.sendMessagePerturbationEtVoyages(voyage,time);
 		return Response.ok().build();
 	}
-	
 }
 

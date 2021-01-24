@@ -1,25 +1,50 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
+
 import org.jboss.weld.junit5.EnableWeld;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.jms.ConnectionFactory;
+import javax.jms.Queue;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status.Family;
 
 import org.jboss.weld.junit5.EnableWeld;
 import org.jboss.weld.junit5.WeldInitiator;
 import org.jboss.weld.junit5.WeldSetup;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
+import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
+import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.PersistenceConf;
+import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
+import fr.pantheonsorbonne.ufr27.miage.jms.AccesJMS;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.JMSProducer;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.VoyageAckQueueSupplier;
+import fr.pantheonsorbonne.ufr27.miage.jms.conf.VoyageQueueSupplier;
+import fr.pantheonsorbonne.ufr27.miage.jms.utils.BrokerUtils;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Gare;
 import fr.pantheonsorbonne.ufr27.miage.jpa.IncidentImpact;
 import fr.pantheonsorbonne.ufr27.miage.jpa.PassageSegment;
@@ -33,17 +58,47 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.TrajetJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPA;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPAAvecRes;
 import fr.pantheonsorbonne.ufr27.miage.jpa.VoyageJPASansRes;
+import fr.pantheonsorbonne.ufr27.miage.jpa.jaxb.mapping.JaxbJpaMapper;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.VoyageDuJour;
+import fr.pantheonsorbonne.ufr27.miage.service.AjoutSuppressionVoyageService;
+import fr.pantheonsorbonne.ufr27.miage.service.DataService;
+import fr.pantheonsorbonne.ufr27.miage.service.GestionPerturbationService;
+import fr.pantheonsorbonne.ufr27.miage.service.InformationVoyageService;
+import fr.pantheonsorbonne.ufr27.miage.service.NotifyInfoGareService;
+import fr.pantheonsorbonne.ufr27.miage.service.RetarderVoyageService;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.AjoutSuppressionVoyageServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.DataServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.GestionPerturbationServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.InformationVoyageServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.NotifyInfoGareServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.service.impl.RetarderVoyageServiceImpl;
+import fr.panthonsorbonne.ufr27.miage.repository.IncidentRepository;
+import fr.panthonsorbonne.ufr27.miage.repository.PassageSegmentRepository;
+import fr.panthonsorbonne.ufr27.miage.repository.VoyageDuJourRepository;
+import fr.panthonsorbonne.ufr27.miage.repository.VoyageRepository;
 
 @EnableWeld
+@TestMethodOrder(OrderAnnotation.class)
 public class testGestionPerturbation {
+	
+	@WeldSetup
+	private WeldInitiator weld = WeldInitiator.from(InformationVoyageService.class, InformationVoyageServiceImpl.class,VoyageDuJourRepository.class,
+			VoyageDAO.class,GestionPerturbationServiceImpl.class,GestionPerturbationService.class,NotifyInfoGareServiceImpl.class,NotifyInfoGareService.class,
+	RetarderVoyageServiceImpl.class,RetarderVoyageService.class,AjoutSuppressionVoyageServiceImpl.class,AjoutSuppressionVoyageService.class,IncidentImpactDAO.class,PassageSegmentDAO.class,
+	VoyageRepository.class,PassageSegmentRepository.class,IncidentRepository.class,IncidentRepository.class,JaxbJpaMapper.class,
+    EMFFactory.class,EntityManagerFactory.class,EMFactory.class,EntityManager.class,ConnectionFactorySupplier.class,ConnectionFactory.class,
+	VoyageAckQueueSupplier.class,VoyageQueueSupplier.class,AccesJMS.class).activate(RequestScoped.class).build();
 
 	@Inject
 	EntityManager em;
 
-
+	@Inject 
+	InformationVoyageService infoService;
+	
+	
 	@BeforeEach
 	public void setup() {
-
+		
 		List<Object> listData = new ArrayList<Object>();
 		
 		em.getTransaction().begin();
@@ -178,22 +233,24 @@ public class testGestionPerturbation {
 			listData.add(incident4);
 			
 			for(Object o : listData){
-				this.em.persist(o);
+				em.persist(o);
 			}
-			this.em.getTransaction().commit();
+			em.getTransaction().commit();
 			
 		}catch (Exception e) {
-			this.em.getTransaction().rollback();
+			em.getTransaction().rollback();
 			throw new RuntimeException("failed to initiate data", e);
 		}	
 
+		BrokerUtils.startBroker();
 	}
 	
 	
 	@Test
-	public void testPaymentDAO() {
-
-
+	public void testgetVoyage() {
+		VoyageDuJour voyagelist = infoService.getListVoyage("trainA", 0);
+        System.out.println(voyagelist);
+		assertEquals(2,voyagelist.getVoyages().size());
 	}
 
 

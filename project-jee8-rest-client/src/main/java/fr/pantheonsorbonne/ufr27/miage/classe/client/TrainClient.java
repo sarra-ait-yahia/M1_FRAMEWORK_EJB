@@ -243,7 +243,7 @@ public class TrainClient implements Runnable {
 			}
 			
 		
-		for (PerturbationTrain p : perturbations) {
+		/*for (PerturbationTrain p : perturbations) {
 			if (p.getHeure() == time) {
 				this.perturbationActuel.setDuree(p.getDuree());
 				this.perturbationActuel.setHeure(p.getHeure());
@@ -251,7 +251,7 @@ public class TrainClient implements Runnable {
 				this.perturbationActuel.setType(type);
 				postInfoVoyageActuel();
 			}
-		}
+		}*/
 
 		time++;
 		try {

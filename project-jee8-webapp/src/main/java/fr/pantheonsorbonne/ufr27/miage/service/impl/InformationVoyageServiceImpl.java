@@ -31,7 +31,7 @@ public class InformationVoyageServiceImpl implements InformationVoyageService {
 	
 	@Override
 	public VoyageDuJour getListVoyage(String trainId, int time) {
-		VoyageDuJour listVoyages = this.voyageDuJourRepo.getVoyageDuJour(trainId,0);
+		VoyageDuJour listVoyages = voyageDuJourRepo.getVoyageDuJour(trainId,0);
 		notifyIngoGareService.sendInfoVoyage(listVoyages.getVoyages(), time,null);
 		return listVoyages;	
 	}

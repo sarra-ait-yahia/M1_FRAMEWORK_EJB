@@ -36,7 +36,7 @@ public class AccesRest {
 	public VoyageDuJour getListVoyages() {
 		Client client = ClientBuilder.newClient();
 		WebTarget webtarget = client.target("http://localhost:8080");
-		Response resp =  client.target(webtarget.path("listVoyageDuTrain").path(""+this.idTrainToAccess).path(""+this.time).getUri()).request().get(Response.class);
+		Response resp =  webtarget.path("listVoyageDuTrain").path(""+this.idTrainToAccess).path(""+this.time).request().get(Response.class);
 		if (resp.getStatusInfo().getFamily().equals(Family.SUCCESSFUL)) {
 			
 			return resp.readEntity(VoyageDuJour.class);

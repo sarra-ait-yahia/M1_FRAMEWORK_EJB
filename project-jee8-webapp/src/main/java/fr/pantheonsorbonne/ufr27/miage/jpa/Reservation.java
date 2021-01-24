@@ -14,8 +14,16 @@ public class Reservation {
 	
 	Passager passager;
 	
-	VoyageJPA voyage;
 
+	public Reservation(Passager passager) {
+		super();
+		this.passager = passager;
+	}
+
+	public Reservation() {
+		super();
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -32,22 +40,7 @@ public class Reservation {
 		this.passager = passager;
 	}
 
-	public VoyageJPA getVoyage() {
-		return voyage;
-	}
 
-	public void setVoyage(VoyageJPA voyage) {
-		this.voyage = voyage;
-	}
 
-	public Reservation(Passager passager) {
-		super();
-		this.passager = passager;
-	}
-
-	public Reservation() {
-		super();
-	}
-	
 	
 }

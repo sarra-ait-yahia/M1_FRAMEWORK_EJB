@@ -9,7 +9,9 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Passager {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
+	
 	String nom;
 
 	public Passager( String nom) {
